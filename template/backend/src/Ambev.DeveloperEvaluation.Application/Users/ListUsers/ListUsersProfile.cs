@@ -8,9 +8,6 @@ public class ListUsersProfile : Profile
 {
     public ListUsersProfile()
     {
-        CreateMap<User, UserApplication>()
-           .ReverseMap();
-
         CreateMap<ListUsersCommand, ApiQueryRequestDomain>();
 
         CreateMap<ApiQueryResponseDomain<User>, ListUsersResult>();
