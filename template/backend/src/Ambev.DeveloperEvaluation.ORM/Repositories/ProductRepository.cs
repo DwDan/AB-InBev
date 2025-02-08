@@ -103,7 +103,9 @@ public class ProductRepository : IProductRepository
     /// <returns>A paginated response containing the list of products.</returns>
     public async Task<ApiQueryResponseDomain<Product>> GetAllProductsAsync(ApiQueryRequestDomain request, CancellationToken cancellationToken = default)
     {
-        var query = _context.Products.AsQueryable();
+        var query = _context.Products
+            .Include(cart => cart.Rating)
+            .AsQueryable();
 
         if (!string.IsNullOrWhiteSpace(request.Order))
             query = query.OrderBy(request.Order.Trim());
@@ -133,7 +135,7 @@ public class ProductRepository : IProductRepository
     /// <returns>A paginated response containing the filtered list of products.</returns>
     public async Task<ApiQueryResponseDomain<Product>> GetAllProductsByCategoryAsync(ApiQueryRequestDomain request, string category, CancellationToken cancellationToken = default)
     {
-        var query = _context.Products.AsQueryable()
+        var query = _context.Products.Include(cart => cart.Rating).AsQueryable()
             .Where(p => p.Category == category);
 
         if (!string.IsNullOrWhiteSpace(request.Order))

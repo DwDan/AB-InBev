@@ -92,7 +92,11 @@ public class UserRepository : IUserRepository
     /// <returns>A paginated response containing the list of users.</returns>
     public async Task<ApiQueryResponseDomain<User>> GetAllUsersAsync(ApiQueryRequestDomain request, CancellationToken cancellationToken = default)
     {
-        var query = _context.Users.AsQueryable();
+        var query = _context.Users
+            .Include(cart => cart.Name)
+            .Include(cart => cart.Address)
+            .ThenInclude(adress=> adress.Geolocation)
+            .AsQueryable();
 
         if (!string.IsNullOrWhiteSpace(request.Order))
             query = query.OrderBy(request.Order.Trim());

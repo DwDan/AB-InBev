@@ -50,7 +50,11 @@ public class CartRepository : ICartRepository
     /// <returns>A paginated response containing the list of carts.</returns>
     public async Task<ApiQueryResponseDomain<Cart>> GetAllCartsAsync(ApiQueryRequestDomain request, CancellationToken cancellationToken = default)
     {
-        var query = _context.Carts.AsQueryable();
+        var query = _context.Carts
+            .Include(cart => cart.User)
+            .Include(cart => cart.Products) 
+            .ThenInclude(cartProduct => cartProduct.Product)
+            .AsQueryable();
 
         if (!string.IsNullOrWhiteSpace(request.Order))
             query = query.OrderBy(request.Order.Trim());
