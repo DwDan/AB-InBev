@@ -10,17 +10,30 @@ public class DefaultContext : DbContext
 {
     public DbSet<User> Users { get; set; }
     public DbSet<Product> Products { get; set; }
+    public DbSet<Cart> Carts { get; set; }
+    public DbSet<CartProduct> CartProducts { get; set; }
 
-    public DefaultContext(DbContextOptions<DefaultContext> options) : base(options)
-    {
-    }
+    public DefaultContext(DbContextOptions<DefaultContext> options) : base(options) { }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
+        modelBuilder.Entity<CartProduct>()
+            .HasOne(cp => cp.Cart)
+            .WithMany(c => c.Products)
+            .HasForeignKey(cp => cp.CartId);
+
+        modelBuilder.Entity<CartProduct>()
+            .HasOne(cp => cp.Product)
+            .WithMany()
+            .HasForeignKey(cp => cp.ProductId);
+
+
         base.OnModelCreating(modelBuilder);
     }
 }
+
 public class YourDbContextFactory : IDesignTimeDbContextFactory<DefaultContext>
 {
     public DefaultContext CreateDbContext(string[] args)
