@@ -14,7 +14,7 @@ namespace Ambev.DeveloperEvaluation.ORM.Mapping
 
             builder.Property(p => p.Id)
                 .HasColumnType("int")
-                .ValueGeneratedOnAdd(); ; 
+                .ValueGeneratedOnAdd();
 
             builder.Property(p => p.Title)
                 .IsRequired()
