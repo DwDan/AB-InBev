@@ -7,7 +7,18 @@ import { provideStore } from '@ngrx/store';
 import { provideEffects } from '@ngrx/effects';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { provideHttpClient } from '@angular/common/http';
+import { authReducer } from './login/store/reducers/auth.reducer';
+import { AuthEffects } from './login/store/effects/auth.effects';
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideRouter(routes), provideClientHydration(), provideStore(), provideEffects(), provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }), provideAnimationsAsync()]
+  providers: [
+    provideRouter(routes),
+    provideHttpClient(),
+    provideClientHydration(),
+    provideStore({ auth: authReducer }),
+    provideEffects([AuthEffects]),
+    provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
+    provideAnimationsAsync(),
+  ],
 };
