@@ -1,6 +1,8 @@
 ﻿using System.Linq.Dynamic.Core;
 using Ambev.DeveloperEvaluation.Domain.Common;
 using Ambev.DeveloperEvaluation.Domain.Entities;
+using Ambev.DeveloperEvaluation.Domain.Events.Sale;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace Ambev.DeveloperEvaluation.ORM.Repositories;
@@ -8,14 +10,16 @@ namespace Ambev.DeveloperEvaluation.ORM.Repositories;
 public class SaleRepository : ISaleRepository
 {
     private readonly DefaultContext _context;
+    private readonly IMediator _mediator;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="SaleRepository"/> class.
     /// </summary>
     /// <param name="context">The database context.</param>
-    public SaleRepository(DefaultContext context)
+    public SaleRepository(DefaultContext context, IMediator mediator)
     {
         _context = context;
+        _mediator = mediator;
     }
 
     /// <summary>
@@ -28,6 +32,7 @@ public class SaleRepository : ISaleRepository
     {
         await _context.Sales.AddAsync(sale, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
+        await _mediator.Publish(new SaleCreatedEvent(sale.Id), cancellationToken);
 
         return sale;
     }
@@ -86,6 +91,8 @@ public class SaleRepository : ISaleRepository
     {
         _context.Sales.Update(sale);
         await _context.SaveChangesAsync(cancellationToken);
+        await _mediator.Publish(new SaleModifiedEvent(sale.Id), cancellationToken);
+
         return sale;
     }
 
@@ -103,6 +110,8 @@ public class SaleRepository : ISaleRepository
 
         _context.Sales.Remove(sale);
         await _context.SaveChangesAsync(cancellationToken);
+        await _mediator.Publish(new SaleCancelledEvent(sale.Id), cancellationToken);
+
         return true;
     }
 
@@ -131,6 +140,8 @@ public class SaleRepository : ISaleRepository
 
         sale.IsCancelled = true;
         await _context.SaveChangesAsync(cancellationToken);
+        await _mediator.Publish(new SaleCancelledEvent(sale.Id), cancellationToken);
+
         return true;
     }
 }
