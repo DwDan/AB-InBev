@@ -1,0 +1,111 @@
+<form [formGroup]="userForm" (ngSubmit)="save()">
+  <div class="modal-content">
+    <div class="row">
+      <div class="col-xl-6 col-lg-6 col-md-12">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Nome de usuário</mat-label>
+          <input matInput formControlName="username" />
+          <mat-error *ngIf="userForm.get('username')?.hasError('required')">
+            Nome de usuário é obrigatório
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="col-xl-6 col-lg-6 col-md-12">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Senha</mat-label>
+          <input matInput type="password" formControlName="password" />
+          <mat-error *ngIf="userForm.get('password')?.hasError('required')">
+            Senha é obrigatória
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xl-6 col-lg-6 col-md-12">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Nome</mat-label>
+          <input matInput formControlName="firstname" />
+          <mat-error *ngIf="userForm.get('firstname')?.hasError('required')">
+            Nome é obrigatório
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="col-xl-6 col-lg-6 col-md-12">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Sobrenome</mat-label>
+          <input matInput formControlName="lastname" />
+          <mat-error *ngIf="userForm.get('lastname')?.hasError('required')">
+            Sobrenome é obrigatório
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xl-6 col-lg-6 col-md-12">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Cidade</mat-label>
+          <input matInput formControlName="city" />
+        </mat-form-field>
+      </div>
+
+      <div class="col-xl-6 col-lg-6 col-md-12">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Rua</mat-label>
+          <input matInput formControlName="street" />
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xl-6 col-lg-6 col-md-12">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Número</mat-label>
+          <input matInput formControlName="number" />
+        </mat-form-field>
+      </div>
+
+      <div class="col-xl-6 col-lg-6 col-md-12">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>CEP</mat-label>
+          <input matInput formControlName="zipcode" />
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xl-6 col-lg-6 col-md-12">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Telefone</mat-label>
+          <input matInput formControlName="phone" />
+        </mat-form-field>
+      </div>
+
+      <div class="col-xl-6 col-lg-6 col-md-12">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Email</mat-label>
+          <input matInput type="email" formControlName="email" />
+          <mat-error *ngIf="userForm.get('email')?.hasError('required')">
+            Email é obrigatório
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button mat-button type="button" (click)="close()">Cancelar</button>
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="userForm.invalid"
+      >
+      <mat-spinner *ngIf="isLoading" diameter="20"></mat-spinner>
+      <span *ngIf="!isLoading">Salvar</span>
+      </button>
+    </div>
+  </div>
+</form>
