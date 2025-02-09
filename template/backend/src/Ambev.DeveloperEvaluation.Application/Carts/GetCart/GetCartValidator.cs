@@ -8,6 +8,6 @@ public class GetCartValidator : AbstractValidator<GetCartCommand>
     {
         RuleFor(x => x.Id)
             .NotEmpty()
-            .WithMessage("User ID is required");
+            .WithMessage("Cart ID is required");
     }
 }

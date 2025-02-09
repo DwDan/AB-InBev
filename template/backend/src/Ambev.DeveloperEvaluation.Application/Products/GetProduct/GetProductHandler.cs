@@ -1,4 +1,3 @@
-using Ambev.DeveloperEvaluation.Domain.Repositories;
 using AutoMapper;
 using FluentValidation;
 using MediatR;
@@ -26,10 +25,10 @@ public class GetProductHandler : IRequestHandler<GetProductCommand, GetProductRe
         if (!validationResult.IsValid)
             throw new ValidationException(validationResult.Errors);
 
-        var user = await _productRepository.GetByIdAsync(request.Id, cancellationToken);
-        if (user == null)
-            throw new KeyNotFoundException($"User with ID {request.Id} not found");
+        var product = await _productRepository.GetByIdAsync(request.Id, cancellationToken);
+        if (product == null)
+            throw new KeyNotFoundException($"Product with ID {request.Id} not found");
 
-        return _mapper.Map<GetProductResult>(user);
+        return _mapper.Map<GetProductResult>(product);
     }
 }
