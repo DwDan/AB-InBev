@@ -1,5 +1,4 @@
 ﻿using Ambev.DeveloperEvaluation.Domain.Entities;
-using Ambev.DeveloperEvaluation.Domain.Repositories;
 using AutoMapper;
 using FluentValidation;
 using MediatR;
@@ -25,7 +24,7 @@ public class CreateProductHandler : IRequestHandler<CreateProductCommand, Create
         if (!validationResult.IsValid)
             throw new ValidationException(validationResult.Errors);
 
-        var existingUser = await _productRepository.GetByTitleAsync(command.Title, cancellationToken);
+        var existingUser = await _productRepository.GetByAsync((product)=> product.Title == command.Title, cancellationToken);
         if (existingUser != null)
             throw new InvalidOperationException($"Product with title {command.Title} already exists");
 

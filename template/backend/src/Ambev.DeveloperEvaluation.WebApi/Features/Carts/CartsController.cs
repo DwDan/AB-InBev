@@ -52,12 +52,8 @@ public class CartsController : BaseController
         var command = _mapper.Map<ListCartsCommand>(request);
         var response = await _mediator.Send(command, cancellationToken);
 
-        return response != null ? Ok(new ApiResponseWithData<ListCartsResponse>
-        {
-            Success = true,
-            Message = "Carts retrieved successfully",
-            Data = _mapper.Map<ListCartsResponse>(response)
-        }) : NotFound(new ApiResponse { Success = false, Message = "Carts not found" });
+        return response != null ? Ok(_mapper.Map<ListCartsResponse>(response)) : 
+            NotFound("Carts not found");
     }
 
     /// <summary>
@@ -77,12 +73,7 @@ public class CartsController : BaseController
         var command = _mapper.Map<CreateCartCommand>(request);
         var response = await _mediator.Send(command, cancellationToken);
 
-        return Created(string.Empty, new ApiResponseWithData<CreateCartResponse>
-        {
-            Success = true,
-            Message = "Cart created successfully",
-            Data = _mapper.Map<CreateCartResponse>(response)
-        });
+        return Ok(_mapper.Map<CreateCartResponse>(response));
     }
 
     /// <summary>
@@ -104,12 +95,8 @@ public class CartsController : BaseController
         var command = _mapper.Map<GetCartCommand>(request.Id);
         var response = await _mediator.Send(command, cancellationToken);
 
-        return response != null ? Ok(new ApiResponseWithData<GetCartResponse>
-        {
-            Success = true,
-            Message = "Cart retrieved successfully",
-            Data = _mapper.Map<GetCartResponse>(response)
-        }) : NotFound(new ApiResponse { Success = false, Message = "Cart not found" });
+        return response != null ? Ok(_mapper.Map<GetCartResponse>(response)) :
+            NotFound("Cart not found");
     }
 
     /// <summary>
@@ -131,12 +118,8 @@ public class CartsController : BaseController
         var command = _mapper.Map<UpdateCartCommand>(request);
         var response = await _mediator.Send(command, cancellationToken);
 
-        return response != null ? Ok(new ApiResponseWithData<UpdateCartResponse>
-        {
-            Success = true,
-            Message = "Cart updated successfully",
-            Data = _mapper.Map<UpdateCartResponse>(response)
-        }) : NotFound(new ApiResponse { Success = false, Message = "Cart not found" });
+        return response != null ? Ok(_mapper.Map<UpdateCartResponse>(response)) : 
+            NotFound("Cart not found");
     }
 
     /// <summary>
@@ -158,6 +141,6 @@ public class CartsController : BaseController
         var command = _mapper.Map<DeleteCartCommand>(request.Id);
         await _mediator.Send(command, cancellationToken);
 
-        return Ok(new ApiResponse { Success = true, Message = "Cart deleted successfully" });
+        return Ok(true);
     }
 }

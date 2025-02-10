@@ -52,12 +52,8 @@ public class BranchesController : BaseController
         var command = _mapper.Map<ListBranchesCommand>(request);
         var response = await _mediator.Send(command, cancellationToken);
 
-        return response != null ? Ok(new ApiResponseWithData<ListBranchesResponse>
-        {
-            Success = true,
-            Message = "Branches retrieved successfully",
-            Data = _mapper.Map<ListBranchesResponse>(response)
-        }) : NotFound(new ApiResponse { Success = false, Message = "Branches not found" });
+        return response != null ? Ok(_mapper.Map<ListBranchesResponse>(response)) : 
+            NotFound("Branches not found");
     }
 
     /// <summary>
@@ -77,12 +73,7 @@ public class BranchesController : BaseController
         var command = _mapper.Map<CreateBranchCommand>(request);
         var response = await _mediator.Send(command, cancellationToken);
 
-        return Created(string.Empty, new ApiResponseWithData<CreateBranchResponse>
-        {
-            Success = true,
-            Message = "Branch created successfully",
-            Data = _mapper.Map<CreateBranchResponse>(response)
-        });
+        return Ok(_mapper.Map<CreateBranchResponse>(response));
     }
 
     /// <summary>
@@ -104,12 +95,8 @@ public class BranchesController : BaseController
         var command = _mapper.Map<GetBranchCommand>(request.Id);
         var response = await _mediator.Send(command, cancellationToken);
 
-        return response != null ? Ok(new ApiResponseWithData<GetBranchResponse>
-        {
-            Success = true,
-            Message = "Branch retrieved successfully",
-            Data = _mapper.Map<GetBranchResponse>(response)
-        }) : NotFound(new ApiResponse { Success = false, Message = "Branch not found" });
+        return response != null ? Ok(_mapper.Map<GetBranchResponse>(response)) : 
+            NotFound("Branch not found");
     }
 
     /// <summary>
@@ -131,12 +118,8 @@ public class BranchesController : BaseController
         var command = _mapper.Map<UpdateBranchCommand>(request);
         var response = await _mediator.Send(command, cancellationToken);
 
-        return response != null ? Ok(new ApiResponseWithData<UpdateBranchResponse>
-        {
-            Success = true,
-            Message = "Branch updated successfully",
-            Data = _mapper.Map<UpdateBranchResponse>(response)
-        }) : NotFound(new ApiResponse { Success = false, Message = "Branch not found" });
+        return response != null ? Ok(_mapper.Map<UpdateBranchResponse>(response)) : 
+            NotFound("Branch not found" );
     }
 
     /// <summary>
@@ -158,6 +141,6 @@ public class BranchesController : BaseController
         var command = _mapper.Map<DeleteBranchCommand>(request.Id);
         await _mediator.Send(command, cancellationToken);
 
-        return Ok(new ApiResponse { Success = true, Message = "Branch deleted successfully" });
+        return Ok(true);
     }
 }

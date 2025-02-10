@@ -1,4 +1,5 @@
-﻿using Ambev.DeveloperEvaluation.Domain.Common;
+﻿using System.Linq.Expressions;
+using Ambev.DeveloperEvaluation.Domain.Common;
 using Ambev.DeveloperEvaluation.Domain.Entities;
 
 public interface IProductRepository
@@ -41,7 +42,7 @@ public interface IProductRepository
     /// <param name="title">The title of the product to search for.</param>
     /// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
     /// <returns>The product if found, otherwise null.</returns>
-    Task<Product?> GetByTitleAsync(string title, CancellationToken cancellationToken = default);
+    Task<Product?> GetByAsync(Expression<Func<Product, bool>> predicate, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Retrieves all unique product categories in the repository.

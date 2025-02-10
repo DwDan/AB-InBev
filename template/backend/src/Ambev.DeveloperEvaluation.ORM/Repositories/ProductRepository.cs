@@ -1,4 +1,5 @@
 ﻿using System.Linq.Dynamic.Core;
+using System.Linq.Expressions;
 using Ambev.DeveloperEvaluation.Domain.Common;
 using Ambev.DeveloperEvaluation.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -48,9 +49,9 @@ public class ProductRepository : IProductRepository
     /// <param name="title">The title of the product to search for.</param>
     /// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
     /// <returns>The product if found, otherwise null.</returns>
-    public async Task<Product?> GetByTitleAsync(string title, CancellationToken cancellationToken = default)
+    public async Task<Product?> GetByAsync(Expression<Func<Product, bool>> predicate, CancellationToken cancellationToken = default)
     {
-        return await _context.Products.FirstOrDefaultAsync(o => o.Title == title, cancellationToken);
+        return await _context.Products.FirstOrDefaultAsync(predicate, cancellationToken);
     }
 
     /// <summary>

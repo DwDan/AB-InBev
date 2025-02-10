@@ -25,7 +25,7 @@ public class UpdateProductHandler : IRequestHandler<UpdateProductCommand, Update
         if (!validationResult.IsValid)
             throw new ValidationException(validationResult.Errors);
 
-        var existingUser = await _productRepository.GetByTitleAsync(command.Title, cancellationToken);
+        var existingUser = await _productRepository.GetByAsync((product) => product.Title == command.Title && product.Id != command.Id, cancellationToken);
         if (existingUser != null)
             throw new InvalidOperationException($"User with email {command.Title} already exists");
 

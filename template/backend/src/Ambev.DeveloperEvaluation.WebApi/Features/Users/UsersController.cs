@@ -52,12 +52,8 @@ public class UsersController : BaseController
         var command = _mapper.Map<ListUsersCommand>(request);
         var response = await _mediator.Send(command, cancellationToken);
 
-        return response != null ? Ok(new ApiResponseWithData<ListUsersResponse>
-        {
-            Success = true,
-            Message = "Users retrieved successfully",
-            Data = _mapper.Map<ListUsersResponse>(response)
-        }) : NotFound(new ApiResponse { Success = false, Message = "Users not found" });
+        return response != null ? Ok(_mapper.Map<ListUsersResponse>(response)) : 
+            NotFound("Users not found");
     }
 
     /// <summary>
@@ -80,12 +76,7 @@ public class UsersController : BaseController
         var command = _mapper.Map<CreateUserCommand>(request);
         var response = await _mediator.Send(command, cancellationToken);
 
-        return Created(string.Empty, new ApiResponseWithData<CreateUserResponse>
-        {
-            Success = true,
-            Message = "User created successfully",
-            Data = _mapper.Map<CreateUserResponse>(response)
-        });
+        return Ok(_mapper.Map<CreateUserResponse>(response));
     }
 
     /// <summary>
@@ -107,12 +98,8 @@ public class UsersController : BaseController
         var command = _mapper.Map<UpdateUserCommand>(request);
         var response = await _mediator.Send(command, cancellationToken);
 
-        return response != null ? Ok(new ApiResponseWithData<UpdateUserResponse>
-        {
-            Success = true,
-            Message = "User updated successfully",
-            Data = _mapper.Map<UpdateUserResponse>(response)
-        }) : NotFound(new ApiResponse { Success = false, Message = "User not found" });
+        return response != null ? Ok(_mapper.Map<UpdateUserResponse>(response)) : 
+            NotFound("User not found");
     }
 
     /// <summary>
@@ -137,12 +124,7 @@ public class UsersController : BaseController
         var command = _mapper.Map<GetUserCommand>(request.Id);
         var response = await _mediator.Send(command, cancellationToken);
 
-        return Ok(new ApiResponseWithData<GetUserResponse>
-        {
-            Success = true,
-            Message = "User retrieved successfully",
-            Data = _mapper.Map<GetUserResponse>(response)
-        });
+        return Ok(_mapper.Map<GetUserResponse>(response));
     }
 
     /// <summary>
@@ -167,10 +149,6 @@ public class UsersController : BaseController
         var command = _mapper.Map<DeleteUserCommand>(request.Id);
         await _mediator.Send(command, cancellationToken);
 
-        return Ok(new ApiResponse
-        {
-            Success = true,
-            Message = "User deleted successfully"
-        });
+        return Ok(true);
     }
 }

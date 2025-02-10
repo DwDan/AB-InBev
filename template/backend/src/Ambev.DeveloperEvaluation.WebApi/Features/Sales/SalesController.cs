@@ -52,12 +52,8 @@ public class SalesController : BaseController
         var command = _mapper.Map<ListSalesCommand>(request);
         var response = await _mediator.Send(command, cancellationToken);
 
-        return response != null ? Ok(new ApiResponseWithData<ListSalesResponse>
-        {
-            Success = true,
-            Message = "Sales retrieved successfully",
-            Data = _mapper.Map<ListSalesResponse>(response)
-        }) : NotFound(new ApiResponse { Success = false, Message = "Sales not found" });
+        return response != null ? Ok(_mapper.Map<ListSalesResponse>(response)) : 
+            NotFound("Sales not found");
     }
 
     /// <summary>
@@ -77,12 +73,7 @@ public class SalesController : BaseController
         var command = _mapper.Map<CreateSaleCommand>(request);
         var response = await _mediator.Send(command, cancellationToken);
 
-        return Created(string.Empty, new ApiResponseWithData<CreateSaleResponse>
-        {
-            Success = true,
-            Message = "Sale created successfully",
-            Data = _mapper.Map<CreateSaleResponse>(response)
-        });
+        return Ok(_mapper.Map<CreateSaleResponse>(response));
     }
 
     /// <summary>
@@ -104,12 +95,8 @@ public class SalesController : BaseController
         var command = _mapper.Map<GetSaleCommand>(request.Id);
         var response = await _mediator.Send(command, cancellationToken);
 
-        return response != null ? Ok(new ApiResponseWithData<GetSaleResponse>
-        {
-            Success = true,
-            Message = "Sale retrieved successfully",
-            Data = _mapper.Map<GetSaleResponse>(response)
-        }) : NotFound(new ApiResponse { Success = false, Message = "Sale not found" });
+        return response != null ? Ok(_mapper.Map<GetSaleResponse>(response)) : 
+            NotFound("Sale not found");
     }
 
     /// <summary>
@@ -131,12 +118,8 @@ public class SalesController : BaseController
         var command = _mapper.Map<UpdateSaleCommand>(request);
         var response = await _mediator.Send(command, cancellationToken);
 
-        return response != null ? Ok(new ApiResponseWithData<UpdateSaleResponse>
-        {
-            Success = true,
-            Message = "Sale updated successfully",
-            Data = _mapper.Map<UpdateSaleResponse>(response)
-        }) : NotFound(new ApiResponse { Success = false, Message = "Sale not found" });
+        return response != null ? Ok(_mapper.Map<UpdateSaleResponse>(response)) : 
+            NotFound("Sale not found");
     }
 
     /// <summary>
@@ -158,6 +141,6 @@ public class SalesController : BaseController
         var command = _mapper.Map<DeleteSaleCommand>(request.Id);
         await _mediator.Send(command, cancellationToken);
 
-        return Ok(new ApiResponse { Success = true, Message = "Sale deleted successfully" });
+        return Ok(true);
     }
 }

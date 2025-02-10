@@ -56,12 +56,8 @@ public class ProductsController : BaseController
         var command = _mapper.Map<ListProductsCommand>(request);
         var response = await _mediator.Send(command, cancellationToken);
 
-        return response != null ? Ok(new ApiResponseWithData<ListProductsResponse>
-        {
-            Success = true,
-            Message = "Products retrieved successfully",
-            Data = _mapper.Map<ListProductsResponse>(response)
-        }) : NotFound(new ApiResponse { Success = false, Message = "Products not found" });
+        return response != null ? Ok(_mapper.Map<ListProductsResponse>(response)) : 
+            NotFound("Products not found");
     }
 
     /// <summary>
@@ -81,12 +77,7 @@ public class ProductsController : BaseController
         var command = _mapper.Map<CreateProductCommand>(request);
         var response = await _mediator.Send(command, cancellationToken);
 
-        return Created(string.Empty, new ApiResponseWithData<CreateProductResponse>
-        {
-            Success = true,
-            Message = "Product created successfully",
-            Data = _mapper.Map<CreateProductResponse>(response)
-        });
+        return Ok(_mapper.Map<CreateProductResponse>(response));
     }
 
     /// <summary>
@@ -108,12 +99,8 @@ public class ProductsController : BaseController
         var command = _mapper.Map<GetProductCommand>(request.Id);
         var response = await _mediator.Send(command, cancellationToken);
 
-        return response != null ? Ok(new ApiResponseWithData<GetProductResponse>
-        {
-            Success = true,
-            Message = "Product retrieved successfully",
-            Data = _mapper.Map<GetProductResponse>(response)
-        }) : NotFound(new ApiResponse { Success = false, Message = "Product not found" });
+        return response != null ? Ok(_mapper.Map<GetProductResponse>(response)) :
+            NotFound("Product not found");
     }
 
     /// <summary>
@@ -135,12 +122,8 @@ public class ProductsController : BaseController
         var command = _mapper.Map<UpdateProductCommand>(request);
         var response = await _mediator.Send(command, cancellationToken);
 
-        return response != null ? Ok(new ApiResponseWithData<UpdateProductResponse>
-        {
-            Success = true,
-            Message = "Product updated successfully",
-            Data = _mapper.Map<UpdateProductResponse>(response)
-        }) : NotFound(new ApiResponse { Success = false, Message = "Product not found" });
+        return response != null ? Ok(_mapper.Map<UpdateProductResponse>(response)) : 
+            NotFound("Product not found");
     }
 
     /// <summary>
@@ -162,7 +145,7 @@ public class ProductsController : BaseController
         var command = _mapper.Map<DeleteProductCommand>(request.Id);
         await _mediator.Send(command, cancellationToken);
 
-        return Ok(new ApiResponse { Success = true, Message = "Product deleted successfully" });
+        return Ok("Product deleted successfully");
     }
 
     /// <summary>
@@ -183,12 +166,8 @@ public class ProductsController : BaseController
         var command = _mapper.Map<ListCategoriesCommand>(request);
         var response = await _mediator.Send(command, cancellationToken);
 
-        return response != null ? Ok(new ApiResponseWithData<ListCategoriesResponse>
-        {
-            Success = true,
-            Message = "Categories retrieved successfully",
-            Data = _mapper.Map<ListCategoriesResponse>(response)
-        }) : NotFound(new ApiResponse { Success = false, Message = "Categories not found" });
+        return response != null ? Ok(_mapper.Map<ListCategoriesResponse>(response)) : 
+            NotFound("Categories not found");
     }
 
     /// <summary>
@@ -209,11 +188,7 @@ public class ProductsController : BaseController
         var command = _mapper.Map<ListProductsByCategoryCommand>(request);
         var response = await _mediator.Send(command, cancellationToken);
 
-        return response != null ? Ok(new ApiResponseWithData<ListProductsByCategoryResponse>
-        {
-            Success = true,
-            Message = "Products retrieved successfully",
-            Data = _mapper.Map<ListProductsByCategoryResponse>(response)
-        }) : NotFound(new ApiResponse { Success = false, Message = "Products not found" });
+        return response != null ? Ok(_mapper.Map<ListProductsByCategoryResponse>(response)) : 
+            NotFound("Products not found");
     }
 }

@@ -81,7 +81,7 @@ public class UserRepository : IUserRepository
     public async Task<User?> GetByAsync(Expression<Func<User, bool>> predicate, CancellationToken cancellationToken = default)
     {
         return await _context.Users
-            .FirstOrDefaultAsync(predicate);
+            .FirstOrDefaultAsync(predicate, cancellationToken);
     }
 
     /// <summary>
