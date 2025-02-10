@@ -1,0 +1,50 @@
+<div class="container mt-4">
+    <mat-toolbar color="primary">
+      <span>Lista de Usuários</span>
+      <span class="spacer"></span>
+      <button mat-raised-button color="accent" (click)="addUser()">
+        <mat-icon>add</mat-icon> Adicionar Usuário
+      </button>
+    </mat-toolbar>
+  
+    <mat-table #table [dataSource]="users" class="mat-elevation-z8">
+      
+      <ng-container matColumnDef="id">
+        <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
+        <mat-cell *matCellDef="let user"> {{ user.id }} </mat-cell>
+      </ng-container>
+  
+      <ng-container matColumnDef="email">
+        <mat-header-cell *matHeaderCellDef> Email </mat-header-cell>
+        <mat-cell *matCellDef="let user"> {{ user.email }} </mat-cell>
+      </ng-container>
+  
+      <ng-container matColumnDef="firstname">
+        <mat-header-cell *matHeaderCellDef> Nome </mat-header-cell>
+        <mat-cell *matCellDef="let user"> {{ user.name.firstname }} </mat-cell>
+      </ng-container>
+  
+      <ng-container matColumnDef="lastname">
+        <mat-header-cell *matHeaderCellDef> Sobrenome </mat-header-cell>
+        <mat-cell *matCellDef="let user"> {{ user.name.lastname }} </mat-cell>
+      </ng-container>  
+  
+      <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef> Ações </mat-header-cell>
+        <mat-cell *matCellDef="let user">
+          <button mat-icon-button color="warn" (click)="editUser(user.id)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="accent" (click)="openDeleteDialog(user.id)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+  
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+  </div>
+  
+  <router-outlet></router-outlet>
+  

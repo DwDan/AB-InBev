@@ -1,35 +1,31 @@
 <div class="login-container">
-    <mat-card class="login-card">
-      <h2 class="title">Login</h2>
-  
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Email</mat-label>
-        <input matInput [(ngModel)]="email" />
-      </mat-form-field>
-  
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Senha</mat-label>
-        <input matInput type="password" [(ngModel)]="password" />
-      </mat-form-field>
-  
-      <div class="button-group">
-        <button
-          mat-raised-button
-          color="primary"
-          (click)="login()"
-          [disabled]="loading$ | async"
-        >
-          Entrar
-        </button>
-  
-        <button mat-raised-button color="accent" (click)="openCreateUserDialog()">
-          Novo Usuário
-        </button>
-      </div>
-  
-      <p *ngIf="loading$ | async" class="loading">Autenticando...</p>
-      <p *ngIf="error$ | async" class="error">{{ error$ | async }}</p>
-      <p *ngIf="token$ | async" class="token">Token: {{ token$ | async }}</p>
-    </mat-card>
-  </div>
-  
+  <mat-card class="login-card">
+    <h2 class="title">Login</h2>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Email</mat-label>
+      <input matInput [(ngModel)]="email" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Senha</mat-label>
+      <input matInput type="password" [(ngModel)]="password" />
+    </mat-form-field>
+
+    <div class="button-group">
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="login()"
+        [disabled]="loading$ | async"
+      >
+        <mat-spinner *ngIf="loading$ | async" diameter="20"></mat-spinner>
+        <span *ngIf="!(loading$ | async)">Entrar</span>
+      </button>
+
+      <button mat-raised-button (click)="createUser()">
+        Novo Usuário
+      </button>
+    </div>
+  </mat-card>
+</div>

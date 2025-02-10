@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, mergeMap, of } from 'rxjs';
+import { catchError, map, mergeMap, of, tap } from 'rxjs';
+import { Router } from '@angular/router';
 import { loginUser, loginSuccess, loginFailure } from '../actions/auth.actions';
 import { AuthService } from '../../service/auth.service';
 
@@ -9,6 +10,7 @@ export class AuthEffects {
   constructor(
     private actions$: Actions,
     private authService: AuthService,
+    private router: Router
   ) {}
 
   login$ = createEffect(() =>
@@ -17,11 +19,23 @@ export class AuthEffects {
       mergeMap(({ email, password }) =>
         this.authService.login(email, password).pipe(
           map((response) => {
-            return loginSuccess({ token: response.token });
+            return loginSuccess({ token: response.data.token });
           }),
-          catchError((error) => of(loginFailure({ error: error.message })))
+          catchError((error) => {
+            alert(error.message);
+            return of(loginFailure({ error: error.message }));
+          })
         )
       )
     )
+  );
+
+  redirectAfterLogin$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(loginSuccess),
+        tap(() => this.router.navigate(['/home']))
+      ),
+    { dispatch: false }
   );
 }
