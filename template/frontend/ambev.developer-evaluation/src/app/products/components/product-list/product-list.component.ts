@@ -64,4 +64,8 @@ export class ProductListComponent implements OnInit {
       }
     });
   }
+
+  goToHome() {
+    this.router.navigate(['/home']);
+  }
 }

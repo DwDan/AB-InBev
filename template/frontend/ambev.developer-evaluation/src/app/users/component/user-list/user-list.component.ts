@@ -64,4 +64,8 @@ export class UserListComponent implements OnInit {
       }
     });
   }
+
+  goToHome() {
+    this.router.navigate(['/home']);
+  }
 }

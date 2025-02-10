@@ -1,5 +1,8 @@
 <div class="container mt-4">
   <mat-toolbar color="primary">
+    <button mat-icon-button (click)="goToHome()">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
     <span>Lista de Produtos</span>
     <span class="spacer"></span>
     <button mat-raised-button color="accent" (click)="addProduct()">
@@ -8,7 +11,6 @@
   </mat-toolbar>
 
   <mat-table #table [dataSource]="products" class="mat-elevation-z8">
-    
     <ng-container matColumnDef="id">
       <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
       <mat-cell *matCellDef="let product"> {{ product.id }} </mat-cell>
@@ -40,14 +42,18 @@
         <button mat-icon-button color="warn" (click)="editProduct(product.id)">
           <mat-icon>edit</mat-icon>
         </button>
-        <button mat-icon-button color="accent" (click)="openDeleteDialog(product.id)">
+        <button
+          mat-icon-button
+          color="accent"
+          (click)="openDeleteDialog(product.id)"
+        >
           <mat-icon>delete</mat-icon>
         </button>
       </mat-cell>
     </ng-container>
 
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
   </mat-table>
 </div>
 

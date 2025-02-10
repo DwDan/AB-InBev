@@ -62,4 +62,8 @@ export class BranchListComponent implements OnInit {
       }
     });
   }
+
+  goToHome() {
+    this.router.navigate(['/home']);
+  }
 }
