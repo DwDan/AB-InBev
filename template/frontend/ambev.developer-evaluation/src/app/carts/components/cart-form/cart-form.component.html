@@ -1,0 +1,70 @@
+<div class="container mt-4">
+  <mat-card>
+    <mat-toolbar color="primary">
+      Editar Carrinho
+    </mat-toolbar>
+
+    <form (ngSubmit)="updateCart()" class="p-3">
+      <div class="row">
+        <mat-table #table [dataSource]="cart.products">
+          <ng-container matColumnDef="id">
+            <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
+            <mat-cell *matCellDef="let product"> {{ product.id }} </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="title">
+            <mat-header-cell *matHeaderCellDef> Nome </mat-header-cell>
+            <mat-cell *matCellDef="let product"> {{ product.title }} </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="price">
+            <mat-header-cell *matHeaderCellDef> Preço </mat-header-cell>
+            <mat-cell *matCellDef="let product">
+              R$ {{ product.price }}
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="quantity">
+            <mat-header-cell *matHeaderCellDef> Quantidade </mat-header-cell>
+            <mat-cell *matCellDef="let product">
+              <button mat-icon-button color="primary" type="button" (click)="decreaseQuantity(product)">
+                <mat-icon>remove</mat-icon>
+              </button>
+              {{ product.quantity }}
+              <button mat-icon-button color="primary" type="button" (click)="increaseQuantity(product)">
+                <mat-icon>add</mat-icon>
+              </button>
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <mat-header-cell *matHeaderCellDef> Ações </mat-header-cell>
+            <mat-cell *matCellDef="let product">
+              <button mat-icon-button type="button" color="warn" (click)="removeProduct(product)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </mat-cell>
+          </ng-container>
+
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+        </mat-table>
+      </div>
+
+      <div class="d-flex justify-content-between">
+        <button mat-button color="primary" (click)="onCancel()" type="button">
+          Voltar
+        </button>
+
+        <div class="d-flex">
+          <button mat-button color="warn" (click)="deleteCart()" type="button">
+            Excluir Carrinho
+          </button>
+          <button mat-flat-button color="primary" type="submit">
+            Pagamento
+          </button>
+        </div>
+      </div>
+    </form>
+  </mat-card>
+</div>
