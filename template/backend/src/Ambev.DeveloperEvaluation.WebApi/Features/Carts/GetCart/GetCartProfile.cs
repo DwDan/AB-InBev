@@ -7,6 +7,7 @@ public class GetCartProfile : Profile
 {
     public GetCartProfile()
     {
+        CreateMap<GetCartProductApplication, GetCartProductPresentation>();
         CreateMap<GetCartRequest, GetCartCommand>();
         CreateMap<GetCartResult, GetCartResponse>();
     }
