@@ -34,7 +34,7 @@ public class UpdateCartHandler : IRequestHandler<UpdateCartCommand, UpdateCartRe
 
         var cart = _mapper.Map<Cart>(command);
 
-        CalculateCartTotalWithDiscounts(cart, cancellationToken);
+        cart = await CalculateCartTotalWithDiscounts(cart, cancellationToken);
 
         await _cartRepository.UpdateAsync(cart, cancellationToken);
 
@@ -43,7 +43,7 @@ public class UpdateCartHandler : IRequestHandler<UpdateCartCommand, UpdateCartRe
         return result;
     }
 
-    private async void CalculateCartTotalWithDiscounts(Cart cart, CancellationToken cancellationToken)
+    private async Task<Cart> CalculateCartTotalWithDiscounts(Cart cart, CancellationToken cancellationToken)
     {
         decimal totalCartPrice = 0;
         decimal totalCartPriceWithDiscount = 0;
@@ -78,5 +78,6 @@ public class UpdateCartHandler : IRequestHandler<UpdateCartCommand, UpdateCartRe
 
         cart.Price = totalCartPrice;
         cart.TotalPrice = totalCartPriceWithDiscount;
+        return cart;
     }
 }
