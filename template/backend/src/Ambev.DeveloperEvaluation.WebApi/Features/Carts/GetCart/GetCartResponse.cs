@@ -8,5 +8,9 @@ public class GetCartResponse
 
     public DateTime Date { get; set; }
 
+    public decimal Price { get; set; }
+
+    public decimal TotalPrice { get; set; }
+
     public virtual List<GetCartProductPresentation> Products { get; set; } = new();
 }

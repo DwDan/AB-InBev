@@ -34,38 +34,49 @@ public class UpdateCartHandler : IRequestHandler<UpdateCartCommand, UpdateCartRe
 
         var cart = _mapper.Map<Cart>(command);
 
-        //var cartDB = await _cartRepository.GetByIdAsync(command.Id, cancellationToken);
-
-        //if (cartDB == null)
-        //    throw new ValidationException($"Cart with ID {cart.Id} not found.");
-
-        //var cartProductsDB = await _cartProductRepository.GetAllByAsync(cp => cp.CartId == cart.Id && cp.Id, cancellationToken);
-        //var productIdsInCommand = command.Products.Select(p => p.ProductId).ToList();
-        //var productsToRemove = cartProductsDB.Where(cp => !productIdsInCommand.Contains(cp.ProductId)).ToList();
-
-        //foreach (var productToRemove in productsToRemove)
-        //    await _cartProductRepository.DeleteAsync(productToRemove.Id, cancellationToken);
-
-        //foreach (var cartProduct in cart.Products)
-        //{
-        //    cartProduct.CartId = cart.Id;
-
-        //    var product = await _productRepository.GetByIdAsync(cartProduct.ProductId);
-        //    if (product == null)
-        //        throw new ValidationException($"Product with ID {cartProduct.ProductId} not found.");
-
-        //    cartProduct.Product = product;
-
-        //    if (cartProduct.Id > 0)
-        //        await _cartProductRepository.UpdateAsync(cartProduct, cancellationToken);
-        //    else
-        //        await _cartProductRepository.CreateAsync(cartProduct, cancellationToken);
-        //}
+        CalculateCartTotalWithDiscounts(cart, cancellationToken);
 
         await _cartRepository.UpdateAsync(cart, cancellationToken);
 
         var result = _mapper.Map<UpdateCartResult>(cart);
 
         return result;
+    }
+
+    private async void CalculateCartTotalWithDiscounts(Cart cart, CancellationToken cancellationToken)
+    {
+        decimal totalCartPrice = 0;
+        decimal totalCartPriceWithDiscount = 0;
+
+        foreach (var cartProduct in cart.Products)
+        {
+            var product = await _productRepository.GetByIdAsync(cartProduct.ProductId, cancellationToken);
+
+            if (product == null)
+                throw new ValidationException($"Product with ID {cartProduct.ProductId} not found.");
+
+            if (cartProduct.Quantity > 20)
+                throw new ValidationException($"Cannot purchase more than 20 units of product ID {cartProduct.ProductId}.");
+
+            cartProduct.Product = product;
+            cartProduct.UnityPrice = product.Price;
+
+            if (cartProduct.Quantity >= 10)
+                cartProduct.Discount = 0.20m; 
+            else if (cartProduct.Quantity >= 4)
+                cartProduct.Discount = 0.10m; 
+            else
+                cartProduct.Discount = 0.00m; 
+
+            decimal originalTotalPrice = cartProduct.UnityPrice * cartProduct.Quantity;
+            decimal discountValue = originalTotalPrice * cartProduct.Discount;
+            cartProduct.TotalPrice = originalTotalPrice - discountValue;
+
+            totalCartPrice += originalTotalPrice;
+            totalCartPriceWithDiscount += cartProduct.TotalPrice;
+        }
+
+        cart.Price = totalCartPrice;
+        cart.TotalPrice = totalCartPriceWithDiscount;
     }
 }

@@ -9,5 +9,6 @@ public class UpdateCartProfile : Profile
     {
         CreateMap<UpdateCartCommand, Cart>();
         CreateMap<Cart, UpdateCartResult>();
+        CreateMap<CartProduct, UpdateCartProductApplication>();
     }
 }

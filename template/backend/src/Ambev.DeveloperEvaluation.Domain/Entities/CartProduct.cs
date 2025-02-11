@@ -17,6 +17,12 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities
         [Required]
         public int Quantity { get; set; }
 
+        public decimal UnityPrice { get; set; }
+
+        public decimal Discount { get; set; }
+
+        public decimal TotalPrice { get; set; }
+
         public virtual Cart? Cart { get; set; }
 
         public virtual Product? Product { get; set; }

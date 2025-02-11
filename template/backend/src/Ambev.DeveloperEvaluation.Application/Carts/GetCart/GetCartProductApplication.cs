@@ -12,5 +12,11 @@ public class GetCartProductApplication
 
     public int Quantity { get; set; }
 
+    public decimal UnityPrice { get; set; }
+
+    public decimal Discount { get; set; }
+
+    public decimal TotalPrice { get; set; }
+
     public virtual ProductApplication? Product { get; set; }
 }

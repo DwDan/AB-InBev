@@ -1,5 +1,3 @@
-using Ambev.DeveloperEvaluation.Application.Products.Common;
-
 namespace Ambev.DeveloperEvaluation.Application.Carts.GetCart;
 
 public class GetCartResult
@@ -9,6 +7,10 @@ public class GetCartResult
     public int UserId { get; set; }
 
     public DateTime Date { get; set; }
+
+    public decimal Price { get; set; }
+
+    public decimal TotalPrice { get; set; }
 
     public virtual List<GetCartProductApplication> Products { get; set; } = new();
 }

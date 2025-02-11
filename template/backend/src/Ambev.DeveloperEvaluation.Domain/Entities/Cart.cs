@@ -17,6 +17,10 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities
 
         public bool Inactive { get; set; }
 
+        public decimal Price { get; set; }
+
+        public decimal TotalPrice { get; set; }
+
         public virtual ICollection<CartProduct> Products { get; set; } = new List<CartProduct>();
 
         public virtual User? User { get; set; }
