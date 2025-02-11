@@ -1,7 +1,4 @@
-﻿using Ambev.DeveloperEvaluation.Application.Carts.Common;
-using Ambev.DeveloperEvaluation.Application.Products.Common;
-
-namespace Ambev.DeveloperEvaluation.Application.Carts.UpdateCart;
+﻿namespace Ambev.DeveloperEvaluation.Application.Carts.UpdateCart;
 
 public class UpdateCartResult
 {
@@ -11,10 +8,9 @@ public class UpdateCartResult
 
     public DateTime Date { get; set; }
 
-    public virtual List<UpdateCartProductApplication> Products { get; set; } = new();
-}
+    public decimal Price { get; set; }
 
-public class UpdateCartProductApplication : CartProductApplication
-{
-    public ProductApplication? Product { get; set; }
+    public decimal TotalPrice { get; set; }
+
+    public virtual List<UpdateCartProductApplication> Products { get; set; } = new();
 }

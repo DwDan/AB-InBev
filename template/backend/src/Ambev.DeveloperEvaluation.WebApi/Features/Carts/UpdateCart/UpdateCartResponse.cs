@@ -1,6 +1,3 @@
-using Ambev.DeveloperEvaluation.WebApi.Features.Carts.Common;
-using Ambev.DeveloperEvaluation.WebApi.Features.Products.Common;
-
 namespace Ambev.DeveloperEvaluation.WebApi.Features.Carts.UpdateCart;
 
 public class UpdateCartResponse 
@@ -11,11 +8,9 @@ public class UpdateCartResponse
 
     public DateTime Date { get; set; }
 
+    public decimal Price { get; set; }
+
+    public decimal TotalPrice { get; set; }
+
     public virtual List<UpdateCartProductPresentation> Products { get; set; } = new();
-}
-
-
-public class UpdateCartProductPresentation : CartProductPresentation
-{
-    public ProductPresentation? Product { get; set; }
 }

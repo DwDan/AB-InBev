@@ -26,7 +26,7 @@
               Valor Unitário
             </mat-header-cell>
             <mat-cell *matCellDef="let cartProduct">
-              R$ {{ cartProduct.product.price | number : "1.2-2" }}
+              R$ {{ cartProduct.unityPrice | number : "1.2-2" }}
             </mat-cell>
             <mat-footer-cell *matFooterCellDef
               >R$ {{ cart.price | number : "1.2-2" }}</mat-footer-cell
