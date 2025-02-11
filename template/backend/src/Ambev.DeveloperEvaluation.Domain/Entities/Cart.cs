@@ -15,7 +15,16 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities
         [Required]
         public DateTime Date { get; set; }
 
+        [ForeignKey("Branch")]
+        public int BranchId { get; set; }
+
+        public virtual Branch? Branch { get; set; }
+
         public bool Inactive { get; set; }
+
+        public bool IsCancelled { get; set; }
+
+        public bool IsFinished { get; set; }
 
         public decimal Price { get; set; }
 

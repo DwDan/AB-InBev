@@ -13,7 +13,6 @@ public class DefaultContext : DbContext
     public DbSet<Cart> Carts { get; set; }
     public DbSet<CartProduct> CartProducts { get; set; }
     public DbSet<Branch> Branches { get; set; }
-    public DbSet<Sale> Sales { get; set; }
 
     public DefaultContext(DbContextOptions<DefaultContext> options) : base(options) { }
 
@@ -30,17 +29,6 @@ public class DefaultContext : DbContext
             .HasOne(cp => cp.Product)
             .WithMany()
             .HasForeignKey(cp => cp.ProductId);
-
-        modelBuilder.Entity<SaleProduct>()
-            .HasOne(cp => cp.Sale)
-            .WithMany(c => c.Products)
-            .HasForeignKey(cp => cp.SaleId);
-
-        modelBuilder.Entity<SaleProduct>()
-            .HasOne(cp => cp.Product)
-            .WithMany()
-            .HasForeignKey(cp => cp.ProductId);
-
 
         base.OnModelCreating(modelBuilder);
     }

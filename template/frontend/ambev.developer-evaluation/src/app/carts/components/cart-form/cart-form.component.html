@@ -67,6 +67,7 @@
                 mat-icon-button
                 color="primary"
                 type="button"
+                [disabled]="cartProduct.quantity == 20"
                 (click)="increaseQuantity(cartProduct)"
               >
                 <mat-icon>add</mat-icon>

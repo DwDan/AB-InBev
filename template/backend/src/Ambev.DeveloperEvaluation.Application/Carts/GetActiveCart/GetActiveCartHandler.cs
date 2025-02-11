@@ -33,7 +33,7 @@ public class GetActiveCartHandler : IRequestHandler<GetActiveCartCommand, GetAct
         if (!validationResult.IsValid)
             throw new ValidationException(validationResult.Errors);
 
-        var cart = await _cartRepository.GetByAsync((cart) => !cart.Inactive && cart.UserId == _userService.GetCurrentUserId());
+        var cart = await _cartRepository.GetByAsync((cart) => !cart.IsCancelled && !cart.IsFinished && cart.UserId == _userService.GetCurrentUserId());
         if (cart == null)
         {
             var userId = _userService.GetCurrentUserId();

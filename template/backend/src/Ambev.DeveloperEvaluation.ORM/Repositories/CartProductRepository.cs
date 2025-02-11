@@ -1,4 +1,6 @@
 ﻿using Ambev.DeveloperEvaluation.Domain.Entities;
+using Ambev.DeveloperEvaluation.Domain.Events.Sale;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace Ambev.DeveloperEvaluation.ORM.Repositories;
@@ -6,14 +8,16 @@ namespace Ambev.DeveloperEvaluation.ORM.Repositories;
 public class CartProductRepository : ICartProductRepository
 {
     private readonly DefaultContext _context;
+    private readonly IMediator _mediator;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="CartProductRepository"/> class.
     /// </summary>
     /// <param name="context">The database context.</param>
-    public CartProductRepository(DefaultContext context)
+    public CartProductRepository(DefaultContext context, IMediator mediator)
     {
         _context = context;
+        _mediator = mediator;
     }
 
     /// <summary>
@@ -67,6 +71,8 @@ public class CartProductRepository : ICartProductRepository
 
         _context.CartProducts.Remove(cartProduct);
         await _context.SaveChangesAsync(cancellationToken);
+        await _mediator.Publish(new SaleItemCancelledEvent(cartProduct.CartId, id), cancellationToken);
+
         return true;
     }
 }
