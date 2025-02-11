@@ -1,53 +1,107 @@
 <div class="container mt-4">
   <mat-card>
-    <mat-toolbar color="primary">
-      Editar Carrinho
-    </mat-toolbar>
+    <mat-toolbar color="primary">Editar Carrinho</mat-toolbar>
 
     <form (ngSubmit)="updateCart()" class="p-3">
       <div class="row">
         <mat-table #table [dataSource]="cart.products">
           <ng-container matColumnDef="id">
             <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
-            <mat-cell *matCellDef="let cartProduct"> {{ cartProduct.product.id }} </mat-cell>
+            <mat-cell *matCellDef="let cartProduct">
+              {{ cartProduct.product.id }}
+            </mat-cell>
+            <mat-footer-cell *matFooterCellDef>*</mat-footer-cell>
           </ng-container>
 
           <ng-container matColumnDef="title">
             <mat-header-cell *matHeaderCellDef> Nome </mat-header-cell>
-            <mat-cell *matCellDef="let cartProduct"> {{ cartProduct.product.description }} </mat-cell>
+            <mat-cell *matCellDef="let cartProduct">
+              {{ cartProduct.product.description }}
+            </mat-cell>
+            <mat-footer-cell *matFooterCellDef>TOTAIS</mat-footer-cell>
           </ng-container>
 
           <ng-container matColumnDef="price">
-            <mat-header-cell *matHeaderCellDef> Preço </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef>
+              Valor Unitário
+            </mat-header-cell>
             <mat-cell *matCellDef="let cartProduct">
-              R$ {{ cartProduct.product.price }}
+              R$ {{ cartProduct.product.price | number : "1.2-2" }}
             </mat-cell>
+            <mat-footer-cell *matFooterCellDef
+              >R$ {{ cart.price | number : "1.2-2" }}</mat-footer-cell
+            >
+          </ng-container>
+
+          <ng-container matColumnDef="discount">
+            <mat-header-cell *matHeaderCellDef> Desconto </mat-header-cell>
+            <mat-cell *matCellDef="let cartProduct">
+              {{ cartProduct.discount * 100 }} %
+            </mat-cell>
+            <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="finalPrice">
+            <mat-header-cell *matHeaderCellDef> Valor Final </mat-header-cell>
+            <mat-cell *matCellDef="let cartProduct">
+              R$ {{ cartProduct.totalPrice | number : "1.2-2" }}
+            </mat-cell>
+            <mat-footer-cell *matFooterCellDef
+              >R$ {{ cart.totalPrice | number : "1.2-2" }}</mat-footer-cell
+            >
           </ng-container>
 
           <ng-container matColumnDef="quantity">
             <mat-header-cell *matHeaderCellDef> Quantidade </mat-header-cell>
             <mat-cell *matCellDef="let cartProduct">
-              <button mat-icon-button color="primary" type="button" (click)="decreaseQuantity(cartProduct)">
+              <button
+                mat-icon-button
+                color="primary"
+                type="button"
+                (click)="decreaseQuantity(cartProduct)"
+              >
                 <mat-icon>remove</mat-icon>
               </button>
               {{ cartProduct.quantity }}
-              <button mat-icon-button color="primary" type="button" (click)="increaseQuantity(cartProduct)">
+              <button
+                mat-icon-button
+                color="primary"
+                type="button"
+                (click)="increaseQuantity(cartProduct)"
+              >
                 <mat-icon>add</mat-icon>
               </button>
             </mat-cell>
+            <mat-footer-cell *matFooterCellDef></mat-footer-cell>
           </ng-container>
 
           <ng-container matColumnDef="actions">
             <mat-header-cell *matHeaderCellDef> Ações </mat-header-cell>
             <mat-cell *matCellDef="let cartProduct">
-              <button mat-icon-button type="button" color="warn" (click)="removeProduct(cartProduct)">
+              <button
+                mat-icon-button
+                type="button"
+                color="warn"
+                (click)="removeProduct(cartProduct)"
+              >
                 <mat-icon>delete</mat-icon>
               </button>
             </mat-cell>
+            <mat-footer-cell *matFooterCellDef>
+              <button
+                mat-icon-button
+                type="button"
+                color="warn"
+                (click)="deleteCart()"
+              >
+                <mat-icon>delete</mat-icon>
+              </button></mat-footer-cell
+            >
           </ng-container>
 
           <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
           <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+          <mat-footer-row *matFooterRowDef="displayedColumns"></mat-footer-row>
         </mat-table>
       </div>
 
@@ -57,9 +111,6 @@
         </button>
 
         <div class="d-flex">
-          <button mat-button color="warn" (click)="deleteCart()" type="button">
-            Excluir Carrinho
-          </button>
           <button mat-flat-button color="primary" type="submit">
             Pagamento
           </button>

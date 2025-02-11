@@ -4,7 +4,7 @@ import { MaterialModule } from '../core/shared/modules/material.module';
 import { Product } from '../products/models/product.model';
 import { ProductService } from '../products/services/product.service';
 import { CartService } from '../carts/services/cart.service';
-import { Cart } from '../carts/models/cart.model';
+import { Cart, instanceCart } from '../carts/models/cart.model';
 import { CartProduct } from '../carts/models/cart-product.model';
 
 @Component({
@@ -16,7 +16,7 @@ import { CartProduct } from '../carts/models/cart-product.model';
 })
 export class HomeComponent implements OnInit {
   products: Product[] = [];
-  cart: Cart = <Cart>{ products: [], id: 0, date: new Date(), userId: 0 };
+  cart: Cart = instanceCart();
 
   displayedColumns: string[] = [
     'id',

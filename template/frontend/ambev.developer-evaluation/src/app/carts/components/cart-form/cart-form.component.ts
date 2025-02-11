@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { CartService } from '../../services/cart.service';
 import { CommonModule, Location } from '@angular/common';
 import { MaterialModule } from '../../../core/shared/modules/material.module';
-import { Cart } from '../../models/cart.model';
+import { Cart, instanceCart } from '../../models/cart.model';
 import { CartProduct } from '../../models/cart-product.model';
 import { CartProductService } from '../../services/cart-product.service';
 
@@ -16,8 +16,16 @@ import { CartProductService } from '../../services/cart-product.service';
   styleUrls: ['./cart-form.component.scss'],
 })
 export class CartFormComponent implements OnInit {
-  cart: Cart = <Cart>{ products: [], id: 0, date: new Date(), userId: 0 };
-  displayedColumns: string[] = ['id', 'title', 'price', 'quantity', 'actions'];
+  cart: Cart = instanceCart();
+  displayedColumns: string[] = [
+    'id',
+    'title',
+    'quantity',
+    'price',
+    'discount',
+    'finalPrice',
+    'actions',
+  ];
 
   private cartService = inject(CartService);
   private cartProductService = inject(CartProductService);
@@ -39,12 +47,14 @@ export class CartFormComponent implements OnInit {
 
   updateCart() {
     this.cartService.updateCart(this.cart).subscribe((response) => {
-      this.cart = response;
+      this.cart = response!;
     });
   }
 
   deleteCartProduct(product: CartProduct) {
-    this.cartProductService.deleteCartProduct(product.id).subscribe((response) => {});
+    this.cartProductService.deleteCartProduct(product.id).subscribe(() => {
+      this.updateCart();
+    });
   }
 
   onCancel() {
@@ -70,7 +80,6 @@ export class CartFormComponent implements OnInit {
   removeProduct(product: CartProduct) {
     this.cart.products = this.cart.products.filter((p) => p.id !== product.id);
     this.deleteCartProduct(product);
-    
   }
 
   deleteCart() {
