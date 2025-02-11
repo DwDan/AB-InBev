@@ -53,6 +53,7 @@ export class CartFormComponent implements OnInit {
         this.cartService.getCartById(cartId).subscribe((cart) => {
           if (cart) {
             this.cart = cart;
+            this.selectedBranch = cart.branchId;
           }
         });
       }
