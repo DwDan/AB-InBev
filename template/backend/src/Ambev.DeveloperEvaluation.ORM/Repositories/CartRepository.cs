@@ -38,9 +38,24 @@ public class CartRepository : ICartRepository
     /// <param name="id">The unique identifier of the cart.</param>
     /// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
     /// <returns>The cart if found, otherwise null.</returns>
+    public async Task<Cart?> GetFullByIdAsync(int id, CancellationToken cancellationToken = default)
+    {
+        return await _context.Carts
+            .Include(cart => cart.User)
+            .Include(cart => cart.Products)
+            .ThenInclude(cartProduct => cartProduct.Product)
+            .FirstOrDefaultAsync(cart=> cart.Id == id, cancellationToken);
+    }
+
+    /// <summary>
+    /// Retrieves a cart by its unique identifier.
+    /// </summary>
+    /// <param name="id">The unique identifier of the cart.</param>
+    /// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
+    /// <returns>The cart if found, otherwise null.</returns>
     public async Task<Cart?> GetByIdAsync(int id, CancellationToken cancellationToken = default)
     {
-        return await _context.Carts.FirstOrDefaultAsync(o => o.Id == id, cancellationToken);
+        return await _context.Carts.FirstOrDefaultAsync(cart=> cart.Id == id, cancellationToken);
     }
 
     /// <summary>
@@ -126,6 +141,10 @@ public class CartRepository : ICartRepository
     /// <returns>A list of carts belonging to the user.</returns>
     public async Task<Cart?> GetByAsync(Expression<Func<Cart, bool>> predicate, CancellationToken cancellationToken = default)
     {
-        return await _context.Carts.FirstOrDefaultAsync(predicate, cancellationToken);
+        return await _context.Carts
+            .Include(cart => cart.User)
+            .Include(cart => cart.Products)
+            .ThenInclude(cartProduct => cartProduct.Product)
+            .FirstOrDefaultAsync(predicate, cancellationToken);
     }
 }

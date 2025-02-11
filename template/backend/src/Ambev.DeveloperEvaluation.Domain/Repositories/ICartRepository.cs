@@ -29,6 +29,14 @@ public interface ICartRepository
     Task<Cart?> GetByIdAsync(int id, CancellationToken cancellationToken = default);
 
     /// <summary>
+    /// Retrieves a cart by its unique identifier.
+    /// </summary>
+    /// <param name="id">The unique identifier of the cart.</param>
+    /// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
+    /// <returns>The cart if found, otherwise null.</returns>
+    Task<Cart?> GetFullByIdAsync(int id, CancellationToken cancellationToken = default);
+
+    /// <summary>
     /// Deletes a cart from the repository by its unique identifier.
     /// </summary>
     /// <param name="id">The unique identifier of the cart to delete.</param>

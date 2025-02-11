@@ -9,14 +9,16 @@ namespace Ambev.DeveloperEvaluation.Application.Carts.UpdateCart;
 public class UpdateCartHandler : IRequestHandler<UpdateCartCommand, UpdateCartResult>
 {
     private readonly ICartRepository _cartRepository;
+    private readonly ICartProductRepository _cartProductRepository;
     private readonly IUserRepository _userRepository;
     private readonly IProductRepository _productRepository;
     private readonly IMapper _mapper;
 
-    public UpdateCartHandler(ICartRepository cartRepository,
+    public UpdateCartHandler(ICartRepository cartRepository, ICartProductRepository cartProductRepository,
         IUserRepository userRepository, IProductRepository productRepository, IMapper mapper)
     {
         _cartRepository = cartRepository;
+        _cartProductRepository = cartProductRepository;
         _productRepository = productRepository;
         _userRepository = userRepository;
         _mapper = mapper;
@@ -32,23 +34,38 @@ public class UpdateCartHandler : IRequestHandler<UpdateCartCommand, UpdateCartRe
 
         var cart = _mapper.Map<Cart>(command);
 
-        var user = await _userRepository.GetByIdAsync(cart.UserId);
-        if (user == null)
-            throw new ValidationException("User not found.");
+        //var cartDB = await _cartRepository.GetByIdAsync(command.Id, cancellationToken);
 
-        cart.User = user;
+        //if (cartDB == null)
+        //    throw new ValidationException($"Cart with ID {cart.Id} not found.");
 
-        foreach (var cartProduct in cart.Products)
-        {
-            var product = await _productRepository.GetByIdAsync(cartProduct.ProductId);
-            if (product == null)
-                throw new ValidationException($"Product with ID {cartProduct.ProductId} not found.");
+        //var cartProductsDB = await _cartProductRepository.GetAllByAsync(cp => cp.CartId == cart.Id && cp.Id, cancellationToken);
+        //var productIdsInCommand = command.Products.Select(p => p.ProductId).ToList();
+        //var productsToRemove = cartProductsDB.Where(cp => !productIdsInCommand.Contains(cp.ProductId)).ToList();
 
-            cartProduct.Product = product;
-        }
+        //foreach (var productToRemove in productsToRemove)
+        //    await _cartProductRepository.DeleteAsync(productToRemove.Id, cancellationToken);
 
-        var createdUser = await _cartRepository.UpdateAsync(cart, cancellationToken);
-        var result = _mapper.Map<UpdateCartResult>(createdUser);
+        //foreach (var cartProduct in cart.Products)
+        //{
+        //    cartProduct.CartId = cart.Id;
+
+        //    var product = await _productRepository.GetByIdAsync(cartProduct.ProductId);
+        //    if (product == null)
+        //        throw new ValidationException($"Product with ID {cartProduct.ProductId} not found.");
+
+        //    cartProduct.Product = product;
+
+        //    if (cartProduct.Id > 0)
+        //        await _cartProductRepository.UpdateAsync(cartProduct, cancellationToken);
+        //    else
+        //        await _cartProductRepository.CreateAsync(cartProduct, cancellationToken);
+        //}
+
+        await _cartRepository.UpdateAsync(cart, cancellationToken);
+
+        var result = _mapper.Map<UpdateCartResult>(cart);
+
         return result;
     }
 }

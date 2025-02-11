@@ -26,7 +26,7 @@ public class GetCartHandler : IRequestHandler<GetCartCommand, GetCartResult>
         if (!validationResult.IsValid)
             throw new ValidationException(validationResult.Errors);
 
-        var cart = await _cartRepository.GetByIdAsync(request.Id, cancellationToken);
+        var cart = await _cartRepository.GetFullByIdAsync(request.Id, cancellationToken);
         if (cart == null)
             throw new KeyNotFoundException($"Cart with ID {request.Id} not found");
 

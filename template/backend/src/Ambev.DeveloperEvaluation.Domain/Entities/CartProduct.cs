@@ -17,8 +17,8 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities
         [Required]
         public int Quantity { get; set; }
 
-        public virtual Cart Cart { get; set; } = new();
+        public virtual Cart? Cart { get; set; }
 
-        public virtual Product Product { get; set; } = new();
+        public virtual Product? Product { get; set; }
     }
 }
