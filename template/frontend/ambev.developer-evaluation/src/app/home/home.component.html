@@ -1,13 +1,71 @@
+<button
+  mat-fab
+  color="accent"
+  class="cart-fab"
+  [matBadge]="cart.products.length"
+  matBadgeColor="warn"
+  [routerLink]="['/carts', cart.id]"
+>
+  <mat-icon>shopping_cart</mat-icon>
+</button>
+
 <div class="container mt-4">
   <mat-toolbar color="primary">
     <button mat-button routerLink="/products">Produtos</button>
     <button mat-button routerLink="/users">Usuários</button>
-    <button mat-button routerLink="/carts">Carrinhos</button>
-    <button mat-button routerLink="/sales">Vendas</button>
-    <button mat-button routerLink="/branches">Filiais</button>    
-    <span class="spacer"></span>    
+    <button mat-button routerLink="/branches">Filiais</button>
+    <span class="spacer"></span>
     <button mat-button color="warn" routerLink="/login">
       <mat-icon>logout</mat-icon> Sair
     </button>
   </mat-toolbar>
+</div>
+
+<div class="container mt-4">
+  <mat-toolbar color="primary">
+    <span>Lista de Produtos</span>
+  </mat-toolbar>
+
+  <mat-table #table [dataSource]="products" class="mat-elevation-z8">
+    <ng-container matColumnDef="id">
+      <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
+      <mat-cell *matCellDef="let product"> {{ product.id }} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="title">
+      <mat-header-cell *matHeaderCellDef> Nome </mat-header-cell>
+      <mat-cell *matCellDef="let product"> {{ product.title }} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="price">
+      <mat-header-cell *matHeaderCellDef> Preço </mat-header-cell>
+      <mat-cell *matCellDef="let product"> R$ {{ product.price }} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="description">
+      <mat-header-cell *matHeaderCellDef> Descrição </mat-header-cell>
+      <mat-cell *matCellDef="let product"> {{ product.description }} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="category">
+      <mat-header-cell *matHeaderCellDef> Categoria </mat-header-cell>
+      <mat-cell *matCellDef="let product"> {{ product.category }} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <mat-header-cell *matHeaderCellDef> Ações </mat-header-cell>
+      <mat-cell *matCellDef="let product">
+        <button
+          mat-icon-button
+          color="accent"
+          (click)="openCartDialog(product.id)"
+        >
+          <mat-icon>add_shopping_cart</mat-icon>
+        </button>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+  </mat-table>
 </div>
