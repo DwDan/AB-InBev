@@ -1,4 +1,5 @@
-﻿using Ambev.DeveloperEvaluation.Domain.Common;
+﻿using System.Linq.Expressions;
+using Ambev.DeveloperEvaluation.Domain.Common;
 using Ambev.DeveloperEvaluation.Domain.Entities;
 
 public interface ICartRepository
@@ -50,4 +51,12 @@ public interface ICartRepository
     /// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
     /// <returns>A paginated response containing the list of carts.</returns>
     Task<ApiQueryResponseDomain<Cart>> GetAllCartsAsync(ApiQueryRequestDomain request, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Retrieves all carts by user ID.
+    /// </summary>
+    /// <param name="userId">The predicate to filter carts by.</param>
+    /// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
+    /// <returns>A list of carts belonging to the user.</returns>
+    Task<Cart?> GetByAsync(Expression<Func<Cart, bool>> predicate, CancellationToken cancellationToken = default);
 }

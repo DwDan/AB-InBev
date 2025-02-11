@@ -11,6 +11,7 @@ using Ambev.DeveloperEvaluation.WebApi.Features.Branches.ListBranches;
 using Ambev.DeveloperEvaluation.WebApi.Features.Branches.UpdateBranch;
 using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ambev.DeveloperEvaluation.WebApi.Features.Branches;
@@ -40,6 +41,7 @@ public class BranchesController : BaseController
     /// Retrieves a paginated list of branches
     /// </summary>
     [HttpGet]
+    [Authorize]
     [ProducesResponseType(typeof(ApiResponseWithData<ListBranchesResponse>), StatusCodes.Status200OK)]
     public async Task<IActionResult> ListBranches([FromQuery] ListBranchesRequest request, CancellationToken cancellationToken)
     {
@@ -60,6 +62,7 @@ public class BranchesController : BaseController
     /// Creates a new branch
     /// </summary>
     [HttpPost]
+    [Authorize]
     [ProducesResponseType(typeof(ApiResponseWithData<CreateBranchResponse>), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateBranch([FromBody] CreateBranchRequest request, CancellationToken cancellationToken)
@@ -80,6 +83,7 @@ public class BranchesController : BaseController
     /// Retrieves a branch by ID
     /// </summary>
     [HttpGet("{id}")]
+    [Authorize]
     [ProducesResponseType(typeof(ApiResponseWithData<GetBranchResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
@@ -103,6 +107,7 @@ public class BranchesController : BaseController
     /// Updates a branch by ID
     /// </summary>
     [HttpPut("{id}")]
+    [Authorize]
     [ProducesResponseType(typeof(ApiResponseWithData<UpdateBranchResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
@@ -126,6 +131,7 @@ public class BranchesController : BaseController
     /// Deletes a branch by ID
     /// </summary>
     [HttpDelete("{id}")]
+    [Authorize]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]

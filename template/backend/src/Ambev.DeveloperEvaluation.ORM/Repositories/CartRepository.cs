@@ -1,4 +1,5 @@
 ﻿using System.Linq.Dynamic.Core;
+using System.Linq.Expressions;
 using Ambev.DeveloperEvaluation.Domain.Common;
 using Ambev.DeveloperEvaluation.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -115,5 +116,16 @@ public class CartRepository : ICartRepository
     {
         return await _context.Carts.Where(c => c.UserId == userId)
             .ToListAsync(cancellationToken);
+    }
+
+    /// <summary>
+    /// Retrieves all carts by user ID.
+    /// </summary>
+    /// <param name="predicate">The predicate to filter carts by.</param>
+    /// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
+    /// <returns>A list of carts belonging to the user.</returns>
+    public async Task<Cart?> GetByAsync(Expression<Func<Cart, bool>> predicate, CancellationToken cancellationToken = default)
+    {
+        return await _context.Carts.FirstOrDefaultAsync(predicate, cancellationToken);
     }
 }

@@ -15,6 +15,8 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities
         [Required]
         public DateTime Date { get; set; }
 
+        public bool Active { get; set; }
+
         public virtual ICollection<CartProduct> Products { get; set; } = new List<CartProduct>();
 
         public virtual User User { get; set; } = new();

@@ -1,1 +1,5 @@
-// Placeholder for IInventoryService.cs file
+public interface IUserService
+{
+    int GetCurrentUserId();
+    string GetCurrentUserEmail();
+}

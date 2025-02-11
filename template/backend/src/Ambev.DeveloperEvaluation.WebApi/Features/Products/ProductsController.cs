@@ -15,6 +15,7 @@ using Ambev.DeveloperEvaluation.WebApi.Features.Products.ListProductsByCategory;
 using Ambev.DeveloperEvaluation.WebApi.Features.Products.UpdateProduct;
 using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ambev.DeveloperEvaluation.WebApi.Features.Products;
@@ -44,6 +45,7 @@ public class ProductsController : BaseController
     /// Retrieves a paginated list of products
     /// </summary>
     [HttpGet]
+    [Authorize]
     [ProducesResponseType(typeof(ApiResponseWithData<ListProductsResponse>), StatusCodes.Status200OK)]
     public async Task<IActionResult> ListProducts([FromQuery] ListProductsRequest request, CancellationToken cancellationToken)
     {
@@ -64,6 +66,7 @@ public class ProductsController : BaseController
     /// Creates a new product
     /// </summary>
     [HttpPost]
+    [Authorize]
     [ProducesResponseType(typeof(ApiResponseWithData<CreateProductResponse>), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateProduct([FromBody] CreateProductRequest request, CancellationToken cancellationToken)
@@ -84,6 +87,7 @@ public class ProductsController : BaseController
     /// Retrieves a product by ID
     /// </summary>
     [HttpGet("{id}")]
+    [Authorize]
     [ProducesResponseType(typeof(ApiResponseWithData<GetProductResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
@@ -107,6 +111,7 @@ public class ProductsController : BaseController
     /// Updates a product by ID
     /// </summary>
     [HttpPut("{id}")]
+    [Authorize]
     [ProducesResponseType(typeof(ApiResponseWithData<UpdateProductResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
@@ -130,6 +135,7 @@ public class ProductsController : BaseController
     /// Deletes a product by ID
     /// </summary>
     [HttpDelete("{id}")]
+    [Authorize]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
@@ -152,6 +158,7 @@ public class ProductsController : BaseController
     /// Retrieves all product categories
     /// </summary>
     [HttpGet("categories")]
+    [Authorize]
     [ProducesResponseType(typeof(ApiResponseWithData<ListCategoriesResponse>), StatusCodes.Status200OK)]
     public async Task<IActionResult> ListCategories(CancellationToken cancellationToken)
     {
@@ -174,6 +181,7 @@ public class ProductsController : BaseController
     /// Retrieves products by category
     /// </summary>
     [HttpGet("category/{category}")]
+    [Authorize]
     [ProducesResponseType(typeof(ApiResponseWithData<ListProductsByCategoryResponse>), StatusCodes.Status200OK)]
     public async Task<IActionResult> ListProductsByCategory([FromRoute] string category, [FromQuery] ListProductsByCategoryRequest request, CancellationToken cancellationToken)
     {
