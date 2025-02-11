@@ -13,9 +13,17 @@ export class ApiService {
   constructor(private http: HttpClient) {}
 
   private createHeaders() {
-    return new HttpHeaders({
+    const token = sessionStorage.getItem('token');  
+  
+    let headers = new HttpHeaders({
       'Content-Type': 'application/json',
     });
+  
+    if (token) {
+      headers = headers.set('Authorization', `Bearer ${token}`);
+    }
+  
+    return headers;
   }
 
   get<T>(endpoint: string): Observable<T> {

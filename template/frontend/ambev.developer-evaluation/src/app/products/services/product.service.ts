@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { Product } from '../models/product.model';
 import { ApiService } from '../../core/services/api.service';
-import { PaginatedResponse } from '../../core/shared/models/paginated-response.mode';
+import { PaginatedResponse } from '../../core/shared/models/paginated-response.model';
 
 @Injectable({
   providedIn: 'root',

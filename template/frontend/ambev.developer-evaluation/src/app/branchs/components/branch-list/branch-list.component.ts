@@ -1,8 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterOutlet } from '@angular/router';
-import { ConfirmationDialogComponent } from '../../../core/shared/components/confirmation-dialog/confirmation-dialog.component';
-import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MaterialModule } from '../../../core/shared/modules/material.module';
 import { Branch } from '../../models/branch.model';
@@ -11,20 +9,15 @@ import { BranchService } from '../../services/branch.service';
 @Component({
   selector: 'app-branch-list',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, MaterialModule, MatIconModule],
+  imports: [CommonModule, MaterialModule, MatIconModule],
   templateUrl: './branch-list.component.html',
   styleUrl: './branch-list.component.scss',
 })
 export class BranchListComponent implements OnInit {
   branches: Branch[] = [];
 
-  displayedColumns: string[] = [
-    'id',
-    'name',
-    'actions',
-  ];
+  displayedColumns: string[] = ['id', 'name', 'actions'];
 
-  private dialog = inject(MatDialog);
   private service = inject(BranchService);
   private router = inject(Router);
 
@@ -42,25 +35,16 @@ export class BranchListComponent implements OnInit {
     this.router.navigate(['branches/add']);
   }
 
-  deleteBranch(id: number) {
-    this.service.deleteBranch(id).subscribe(() => {
-      this.loadBranches(); 
-    });
-  }
-
   editBranch(id: number) {
     this.router.navigate(['branches/edit', id]);
   }
 
-  openDeleteDialog(id: number) {
-    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-      data: { message: 'Deseja realmente excluir este filial?' },
-    });
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.deleteBranch(id);
-      }
-    });
+  deleteBranch(id: number) {
+    if (confirm('Deseja realmente excluir este filial?')) {
+      this.service.deleteBranch(id).subscribe(() => {
+        this.loadBranches();
+      });
+    }
   }
 
   goToHome() {
