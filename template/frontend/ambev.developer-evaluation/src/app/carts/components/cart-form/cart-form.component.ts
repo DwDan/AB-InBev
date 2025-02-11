@@ -73,7 +73,7 @@ export class CartFormComponent implements OnInit {
 
   onCancel() {
     if (confirm('Deseja cancelar venda?')) {
-      this.cart.IsCancelled = true;
+      this.cart.isCancelled = true;
 
       this.cartService.updateCart(this.cart).subscribe((response) => {
         alert('Venda cancelada com sucesso!');

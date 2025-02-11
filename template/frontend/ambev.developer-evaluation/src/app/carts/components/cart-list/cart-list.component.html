@@ -1,0 +1,47 @@
+<div class="container mt-4">
+  <mat-toolbar color="primary">
+    <button mat-icon-button (click)="goToHome()">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <span>Lista de vendas</span>
+  </mat-toolbar>
+
+  <mat-table #table [dataSource]="carts" class="mat-elevation-z8">
+    <ng-container matColumnDef="id">
+      <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
+      <mat-cell *matCellDef="let cart"> {{ cart.id }} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="date">
+      <mat-header-cell *matHeaderCellDef> Data </mat-header-cell>
+      <mat-cell *matCellDef="let cart">
+        {{ cart.date | date : "dd/MM/yyyy HH:mm" }}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="status">
+      <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
+      <mat-cell *matCellDef="let cart">
+        {{
+          cart.isCancelled
+            ? "Cancelado"
+            : cart.isFinished
+            ? "Finalizado"
+            : "Em andamento"
+        }}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <mat-header-cell *matHeaderCellDef> Ações </mat-header-cell>
+      <mat-cell *matCellDef="let cart">
+        <button mat-icon-button color="warn" (click)="viewCart(cart.id)">
+          <mat-icon>visibility</mat-icon>
+        </button>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+  </mat-table>
+</div>

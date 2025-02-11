@@ -6,7 +6,12 @@
       <div class="row">
         <mat-form-field appearance="fill" class="w-100">
           <mat-label>Selecione a Filial</mat-label>
-          <mat-select [(ngModel)]="selectedBranch" name="branch" required>
+          <mat-select
+            [(ngModel)]="selectedBranch"
+            name="branch"
+            required
+            [disabled]="cart.isCancelled || cart.isFinished"
+          >
             <mat-option *ngFor="let branch of branches" [value]="branch.id">
               {{ branch.name }}
             </mat-option>
@@ -39,9 +44,9 @@
             <mat-cell *matCellDef="let cartProduct">
               R$ {{ cartProduct.unityPrice | number : "1.2-2" }}
             </mat-cell>
-            <mat-footer-cell *matFooterCellDef
-              >R$ {{ cart.price | number : "1.2-2" }}</mat-footer-cell
-            >
+            <mat-footer-cell *matFooterCellDef>
+              R$ {{ cart.price | number : "1.2-2" }}
+            </mat-footer-cell>
           </ng-container>
 
           <ng-container matColumnDef="discount">
@@ -57,9 +62,9 @@
             <mat-cell *matCellDef="let cartProduct">
               R$ {{ cartProduct.totalPrice | number : "1.2-2" }}
             </mat-cell>
-            <mat-footer-cell *matFooterCellDef
-              >R$ {{ cart.totalPrice | number : "1.2-2" }}</mat-footer-cell
-            >
+            <mat-footer-cell *matFooterCellDef>
+              R$ {{ cart.totalPrice | number : "1.2-2" }}
+            </mat-footer-cell>
           </ng-container>
 
           <ng-container matColumnDef="quantity">
@@ -70,6 +75,7 @@
                 color="primary"
                 type="button"
                 (click)="decreaseQuantity(cartProduct)"
+                [disabled]="cart.isCancelled || cart.isFinished"
               >
                 <mat-icon>remove</mat-icon>
               </button>
@@ -78,7 +84,11 @@
                 mat-icon-button
                 color="primary"
                 type="button"
-                [disabled]="cartProduct.quantity == 20"
+                [disabled]="
+                  cart.isCancelled ||
+                  cart.isFinished ||
+                  cartProduct.quantity == 20
+                "
                 (click)="increaseQuantity(cartProduct)"
               >
                 <mat-icon>add</mat-icon>
@@ -95,6 +105,7 @@
                 type="button"
                 color="warn"
                 (click)="removeProduct(cartProduct)"
+                [disabled]="cart.isCancelled || cart.isFinished"
               >
                 <mat-icon>delete</mat-icon>
               </button>
@@ -105,10 +116,11 @@
                 type="button"
                 color="warn"
                 (click)="deleteCart()"
+                [disabled]="cart.isCancelled || cart.isFinished"
               >
                 <mat-icon>delete</mat-icon>
-              </button></mat-footer-cell
-            >
+              </button>
+            </mat-footer-cell>
           </ng-container>
 
           <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
@@ -123,14 +135,25 @@
         </button>
 
         <div class="d-flex justify-content-end gap-2">
-          <button mat-flat-button color="warn" type="button" (click)="onCancel()">
+          <button
+            mat-flat-button
+            color="warn"
+            type="button"
+            (click)="onCancel()"
+            [disabled]="cart.isCancelled || cart.isFinished"
+          >
             Cancelar
           </button>
-        
-          <button mat-flat-button color="primary" type="submit">
+
+          <button
+            mat-flat-button
+            color="primary"
+            type="submit"
+            [disabled]="cart.isCancelled || cart.isFinished"
+          >
             Finalizar
           </button>
-        </div>        
+        </div>
       </div>
     </form>
   </mat-card>

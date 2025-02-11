@@ -9,6 +9,7 @@ import { CartFormComponent } from './carts/components/cart-form/cart-form.compon
 import { BranchListComponent } from './branchs/components/branch-list/branch-list.component';
 import { BranchFormComponent } from './branchs/components/branch-form/branch-form.component';
 import { TokenGuard } from './core/shared/guards/token.guard';
+import { CartListComponent } from './carts/components/cart-list/cart-list.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -46,6 +47,11 @@ export const routes: Routes = [
   {
     path: 'users/add',
     component: UserFormComponent,
+  },
+  {
+    path: 'carts',
+    component: CartListComponent,
+    canActivate: [TokenGuard],
   },
   {
     path: 'carts/:id',

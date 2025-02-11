@@ -12,5 +12,11 @@ public class GetCartResponse
 
     public decimal TotalPrice { get; set; }
 
+    public bool IsFinished { get; set; }
+
+    public bool IsCancelled { get; set; }
+
+    public int? BranchId { get; set; }
+
     public virtual List<GetCartProductPresentation> Products { get; set; } = new();
 }
