@@ -19,7 +19,8 @@ export class AuthEffects {
       mergeMap(({ email, password }) =>
         this.authService.login(email, password).pipe(
           map((response) => {
-            return loginSuccess({ token: response.data.token });
+            sessionStorage.setItem('token', response.token);
+            return loginSuccess({ token: response.token });
           }),
           catchError((error) => {
             alert(error.message);

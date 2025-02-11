@@ -37,6 +37,7 @@ export class LoginComponent {
 
   constructor() {
     this.loading$ = this.store.select(selectAuthLoading);
+    sessionStorage.removeItem('token');
   }
 
   login() {
