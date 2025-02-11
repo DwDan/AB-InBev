@@ -7,6 +7,9 @@ export interface Cart {
   price : number;
   totalPrice : number;
   products: CartProduct[];
+  isFinished: boolean;
+  IsCancelled: boolean;
+  branchId?: number;
 }
 
 export function instanceCart() {
@@ -19,5 +22,7 @@ export function instanceCart() {
     unityPrice: 0,
     discount: 0,
     totalPrice: 0,
+    isFinished: false,
+    IsCancelled: false
   };
 }

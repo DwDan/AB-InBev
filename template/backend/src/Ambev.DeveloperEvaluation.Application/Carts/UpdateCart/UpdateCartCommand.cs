@@ -6,6 +6,9 @@ namespace Ambev.DeveloperEvaluation.Application.Carts.UpdateCart;
 
 public class UpdateCartCommand : CartApplication, IRequest<UpdateCartResult>
 {
+    public bool IsFinished { get; set; }
+    public bool IsCancelled { get; set; }
+
     public ValidationResultDetail Validate()
     {
         var validator = new UpdateCartCommandValidator();

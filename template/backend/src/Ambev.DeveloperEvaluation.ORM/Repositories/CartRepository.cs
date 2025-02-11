@@ -50,7 +50,7 @@ public class CartRepository : ICartRepository
             .Include(cart => cart.User)
             .Include(cart => cart.Products)
             .ThenInclude(cartProduct => cartProduct.Product)
-            .FirstOrDefaultAsync(cart=> cart.Id == id, cancellationToken);
+            .FirstOrDefaultAsync(cart => cart.Id == id, cancellationToken);
     }
 
     /// <summary>
@@ -61,7 +61,7 @@ public class CartRepository : ICartRepository
     /// <returns>The cart if found, otherwise null.</returns>
     public async Task<Cart?> GetByIdAsync(int id, CancellationToken cancellationToken = default)
     {
-        return await _context.Carts.FirstOrDefaultAsync(cart=> cart.Id == id, cancellationToken);
+        return await _context.Carts.FirstOrDefaultAsync(cart => cart.Id == id, cancellationToken);
     }
 
     /// <summary>
@@ -74,7 +74,7 @@ public class CartRepository : ICartRepository
     {
         var query = _context.Carts
             .Include(cart => cart.User)
-            .Include(cart => cart.Products) 
+            .Include(cart => cart.Products)
             .ThenInclude(cartProduct => cartProduct.Product)
             .AsQueryable();
 
@@ -107,7 +107,11 @@ public class CartRepository : ICartRepository
     {
         _context.Carts.Update(cart);
         await _context.SaveChangesAsync(cancellationToken);
-        await _mediator.Publish(new SaleModifiedEvent(cart.Id), cancellationToken);
+
+        if (cart.IsCancelled)
+            await _mediator.Publish(new SaleCancelledEvent(cart.Id), cancellationToken);
+        else
+            await _mediator.Publish(new SaleModifiedEvent(cart.Id), cancellationToken);
 
         return cart;
     }

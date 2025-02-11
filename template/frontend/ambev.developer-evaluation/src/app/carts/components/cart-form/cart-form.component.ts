@@ -1,5 +1,11 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import {
+  ReactiveFormsModule,
+  FormsModule,
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { CartService } from '../../services/cart.service';
 import { CommonModule, Location } from '@angular/common';
@@ -7,6 +13,8 @@ import { MaterialModule } from '../../../core/shared/modules/material.module';
 import { Cart, instanceCart } from '../../models/cart.model';
 import { CartProduct } from '../../models/cart-product.model';
 import { CartProductService } from '../../services/cart-product.service';
+import { BranchService } from '../../../branchs/services/branch.service';
+import { Branch } from '../../../branchs/models/branch.model';
 
 @Component({
   selector: 'app-cart-form',
@@ -17,6 +25,8 @@ import { CartProductService } from '../../services/cart-product.service';
 })
 export class CartFormComponent implements OnInit {
   cart: Cart = instanceCart();
+  branches: Branch[] = [];
+  selectedBranch?: number;
   displayedColumns: string[] = [
     'id',
     'title',
@@ -29,10 +39,14 @@ export class CartFormComponent implements OnInit {
 
   private cartService = inject(CartService);
   private cartProductService = inject(CartProductService);
+  private branchService = inject(BranchService);
   private route = inject(ActivatedRoute);
   private location = inject(Location);
+  private fb = inject(FormBuilder);
 
   ngOnInit() {
+    this.getBranches();
+
     this.route.params.subscribe((params) => {
       if (params['id']) {
         let cartId = +params['id'];
@@ -43,6 +57,29 @@ export class CartFormComponent implements OnInit {
         });
       }
     });
+  }
+
+  onSubmit() {
+    if (confirm('Deseja finalizar venda?')) {
+      this.cart.isFinished = true;
+      this.cart.branchId = this.selectedBranch;
+
+      this.cartService.updateCart(this.cart).subscribe((response) => {
+        alert('Venda finalizada com sucesso!');
+        this.location.back();
+      });
+    }
+  }
+
+  onCancel() {
+    if (confirm('Deseja cancelar venda?')) {
+      this.cart.IsCancelled = true;
+
+      this.cartService.updateCart(this.cart).subscribe((response) => {
+        alert('Venda cancelada com sucesso!');
+        this.location.back();
+      });
+    }
   }
 
   updateCart() {
@@ -57,7 +94,7 @@ export class CartFormComponent implements OnInit {
     });
   }
 
-  onCancel() {
+  onReturn() {
     this.location.back();
   }
 
@@ -88,5 +125,11 @@ export class CartFormComponent implements OnInit {
         this.location.back();
       });
     }
+  }
+
+  getBranches() {
+    this.branchService.getBranches().subscribe((retorno) => {
+      this.branches = retorno;
+    });
   }
 }
