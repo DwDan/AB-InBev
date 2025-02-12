@@ -40,22 +40,12 @@ public class CreateUserHandlerTests
     {
         // Given
         var command = CreateUserHandlerTestData.GenerateValidCommand();
-        var user = new User
-        {
-            Id = int.MaxValue,
-            Username = command.Username,
-            Password = command.Password,
-            Email = command.Email,
-            Phone = command.Phone,
-            Status = command.Status,
-            Role = command.Role
-        };
+        var user = CreateUserHandlerTestData.GenerateValidCommand(command);
 
         var result = new CreateUserResult
         {
             Id = user.Id,
         };
-
 
         _mapper.Map<User>(command).Returns(user);
         _mapper.Map<CreateUserResult>(user).Returns(result);
@@ -99,16 +89,7 @@ public class CreateUserHandlerTests
         var command = CreateUserHandlerTestData.GenerateValidCommand();
         var originalPassword = command.Password;
         const string hashedPassword = "h@shedPassw0rd";
-        var user = new User
-        {
-            Id = int.MaxValue,
-            Username = command.Username,
-            Password = command.Password,
-            Email = command.Email,
-            Phone = command.Phone,
-            Status = command.Status,
-            Role = command.Role
-        };
+        var user = CreateUserHandlerTestData.GenerateValidCommand(command);
 
         _mapper.Map<User>(command).Returns(user);
         _userRepository.CreateAsync(Arg.Any<User>(), Arg.Any<CancellationToken>())
@@ -133,16 +114,7 @@ public class CreateUserHandlerTests
     {
         // Given
         var command = CreateUserHandlerTestData.GenerateValidCommand();
-        var user = new User
-        {
-            Id = int.MaxValue,
-            Username = command.Username,
-            Password = command.Password,
-            Email = command.Email,
-            Phone = command.Phone,
-            Status = command.Status,
-            Role = command.Role
-        };
+        var user = CreateUserHandlerTestData.GenerateValidCommand(command);
 
         _mapper.Map<User>(command).Returns(user);
         _userRepository.CreateAsync(Arg.Any<User>(), Arg.Any<CancellationToken>())
