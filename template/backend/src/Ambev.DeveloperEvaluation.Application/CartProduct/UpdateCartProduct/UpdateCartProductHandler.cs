@@ -32,6 +32,9 @@ public class UpdateCartProductHandler : IRequestHandler<UpdateCartProductCommand
         if (!validationResult.IsValid)
             throw new ValidationException(validationResult.Errors);
 
+        if (await _cartProductRepository.GetByIdAsync(command.Id, cancellationToken) == null)
+            throw new KeyNotFoundException($"Cart product with ID {command.Id} not found");
+
         var cartProduct = _mapper.Map<CartProduct>(command);
 
         await _cartProductRepository.UpdateAsync(cartProduct, cancellationToken);

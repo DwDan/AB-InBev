@@ -56,8 +56,7 @@ public class CartsController : BaseController
         var command = _mapper.Map<ListCartsCommand>(request);
         var response = await _mediator.Send(command, cancellationToken);
 
-        return response != null ? Ok(_mapper.Map<ListCartsResponse>(response)) : 
-            NotFound("Carts not found");
+        return Ok(_mapper.Map<ListCartsResponse>(response));
     }
 
     /// <summary>
@@ -101,8 +100,7 @@ public class CartsController : BaseController
         var command = _mapper.Map<GetCartCommand>(request.Id);
         var response = await _mediator.Send(command, cancellationToken);
 
-        return response != null ? Ok(_mapper.Map<GetCartResponse>(response)) :
-            NotFound("Cart not found");
+        return Ok(_mapper.Map<GetCartResponse>(response));
     }
 
     /// <summary>
@@ -125,8 +123,7 @@ public class CartsController : BaseController
         var command = _mapper.Map<GetActiveCartCommand>(request);
         var response = await _mediator.Send(command, cancellationToken);
 
-        return response != null ? Ok(_mapper.Map<GetActiveCartResponse>(response)) :
-            NotFound("Cart not found");
+        return Ok(_mapper.Map<GetActiveCartResponse>(response));
     }
 
     /// <summary>
@@ -149,8 +146,7 @@ public class CartsController : BaseController
         var command = _mapper.Map<UpdateCartCommand>(request);
         var response = await _mediator.Send(command, cancellationToken);
 
-        return response != null ? Ok(_mapper.Map<UpdateCartResponse>(response)) : 
-            NotFound("Cart not found");
+        return Ok(_mapper.Map<UpdateCartResponse>(response));
     }
 
     /// <summary>

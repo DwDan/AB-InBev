@@ -43,6 +43,9 @@ public class UpdateUserHandler : IRequestHandler<UpdateUserCommand, UpdateUserRe
         if (!validationResult.IsValid)
             throw new ValidationException(validationResult.Errors);
 
+        if (await _userRepository.GetByIdAsync(command.Id, cancellationToken) == null)
+            throw new KeyNotFoundException($"User with ID {command.Id} not found");
+
         var existingUser = await _userRepository.GetByAsync(user=> user.Email == command.Email && user.Id != command.Id, cancellationToken);
         if (existingUser != null)
             throw new InvalidOperationException($"User with email {command.Email} already exists");

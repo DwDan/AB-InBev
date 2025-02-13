@@ -54,8 +54,7 @@ public class BranchesController : BaseController
         var command = _mapper.Map<ListBranchesCommand>(request);
         var response = await _mediator.Send(command, cancellationToken);
 
-        return response != null ? Ok(_mapper.Map<ListBranchesResponse>(response)) : 
-            NotFound("Branches not found");
+        return Ok(_mapper.Map<ListBranchesResponse>(response));
     }
 
     /// <summary>
@@ -99,8 +98,7 @@ public class BranchesController : BaseController
         var command = _mapper.Map<GetBranchCommand>(request.Id);
         var response = await _mediator.Send(command, cancellationToken);
 
-        return response != null ? Ok(_mapper.Map<GetBranchResponse>(response)) : 
-            NotFound("Branch not found");
+        return Ok(_mapper.Map<GetBranchResponse>(response));
     }
 
     /// <summary>
@@ -123,8 +121,7 @@ public class BranchesController : BaseController
         var command = _mapper.Map<UpdateBranchCommand>(request);
         var response = await _mediator.Send(command, cancellationToken);
 
-        return response != null ? Ok(_mapper.Map<UpdateBranchResponse>(response)) : 
-            NotFound("Branch not found" );
+        return Ok(_mapper.Map<UpdateBranchResponse>(response));
     }
 
     /// <summary>

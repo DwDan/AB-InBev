@@ -58,8 +58,7 @@ public class ProductsController : BaseController
         var command = _mapper.Map<ListProductsCommand>(request);
         var response = await _mediator.Send(command, cancellationToken);
 
-        return response != null ? Ok(_mapper.Map<ListProductsResponse>(response)) : 
-            NotFound("Products not found");
+        return Ok(_mapper.Map<ListProductsResponse>(response));
     }
 
     /// <summary>
@@ -103,8 +102,7 @@ public class ProductsController : BaseController
         var command = _mapper.Map<GetProductCommand>(request.Id);
         var response = await _mediator.Send(command, cancellationToken);
 
-        return response != null ? Ok(_mapper.Map<GetProductResponse>(response)) :
-            NotFound("Product not found");
+        return Ok(_mapper.Map<GetProductResponse>(response));
     }
 
     /// <summary>
@@ -127,8 +125,7 @@ public class ProductsController : BaseController
         var command = _mapper.Map<UpdateProductCommand>(request);
         var response = await _mediator.Send(command, cancellationToken);
 
-        return response != null ? Ok(_mapper.Map<UpdateProductResponse>(response)) : 
-            NotFound("Product not found");
+        return Ok(_mapper.Map<UpdateProductResponse>(response));
     }
 
     /// <summary>
@@ -173,8 +170,7 @@ public class ProductsController : BaseController
         var command = _mapper.Map<ListCategoriesCommand>(request);
         var response = await _mediator.Send(command, cancellationToken);
 
-        return response != null ? Ok(_mapper.Map<ListCategoriesResponse>(response)) : 
-            NotFound("Categories not found");
+        return Ok(_mapper.Map<ListCategoriesResponse>(response));
     }
 
     /// <summary>
@@ -196,7 +192,6 @@ public class ProductsController : BaseController
         var command = _mapper.Map<ListProductsByCategoryCommand>(request);
         var response = await _mediator.Send(command, cancellationToken);
 
-        return response != null ? Ok(_mapper.Map<ListProductsByCategoryResponse>(response)) : 
-            NotFound("Products not found");
+        return Ok(_mapper.Map<ListProductsByCategoryResponse>(response));
     }
 }

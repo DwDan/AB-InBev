@@ -54,8 +54,7 @@ public class UsersController : BaseController
         var command = _mapper.Map<ListUsersCommand>(request);
         var response = await _mediator.Send(command, cancellationToken);
 
-        return response != null ? Ok(_mapper.Map<ListUsersResponse>(response)) : 
-            NotFound("Users not found");
+        return Ok(_mapper.Map<ListUsersResponse>(response));
     }
 
     /// <summary>
@@ -101,8 +100,7 @@ public class UsersController : BaseController
         var command = _mapper.Map<UpdateUserCommand>(request);
         var response = await _mediator.Send(command, cancellationToken);
 
-        return response != null ? Ok(_mapper.Map<UpdateUserResponse>(response)) : 
-            NotFound("User not found");
+        return Ok(_mapper.Map<UpdateUserResponse>(response));
     }
 
     /// <summary>

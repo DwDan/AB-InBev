@@ -76,8 +76,7 @@ public class CartProductsController : BaseController
         var command = _mapper.Map<GetCartProductCommand>(request.Id);
         var response = await _mediator.Send(command, cancellationToken);
 
-        return response != null ? Ok(_mapper.Map<GetCartProductResponse>(response)) :
-            NotFound("CartProduct not found");
+        return Ok(_mapper.Map<GetCartProductResponse>(response));
     }
 
     /// <summary>
@@ -100,8 +99,7 @@ public class CartProductsController : BaseController
         var command = _mapper.Map<UpdateCartProductCommand>(request);
         var response = await _mediator.Send(command, cancellationToken);
 
-        return response != null ? Ok(_mapper.Map<UpdateCartProductResponse>(response)) : 
-            NotFound("CartProduct not found");
+        return Ok(_mapper.Map<UpdateCartProductResponse>(response));
     }
 
     /// <summary>
