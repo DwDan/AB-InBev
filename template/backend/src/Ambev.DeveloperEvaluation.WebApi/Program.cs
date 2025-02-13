@@ -22,8 +22,7 @@ public partial class Program
 
             var app = CreateWebApplication(args);
 
-            if (Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") != "true")
-                app.Run();
+            app.Run();
         }
         catch (Exception ex)
         {
