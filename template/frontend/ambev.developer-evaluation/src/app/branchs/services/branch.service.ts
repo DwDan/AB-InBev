@@ -25,7 +25,7 @@ export class BranchService {
     return this.apiService.put<Branch>('branches', updatedBranch.id, updatedBranch);
   }
 
-  deleteBranch(id: number): Observable<void> {
+  deleteBranch(id: number): Observable<boolean> {
     return this.apiService.delete('branches', id);
   }
 

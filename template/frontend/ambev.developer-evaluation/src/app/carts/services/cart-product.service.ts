@@ -17,7 +17,7 @@ export class CartProductService {
     return this.apiService.put<CartProduct>('cartproducts', updatedCartProduct.id, updatedCartProduct);
   }
 
-  deleteCartProduct(id: number): Observable<void> {
+  deleteCartProduct(id: number): Observable<boolean> {
     return this.apiService.delete('cartproducts', id);
   }
 

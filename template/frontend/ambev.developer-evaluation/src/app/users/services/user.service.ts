@@ -25,7 +25,7 @@ export class UserService {
     return this.apiService.put<User>('users', updatedUser.id, updatedUser);
   }
 
-  deleteUser(id: number): Observable<void> {
+  deleteUser(id: number): Observable<boolean> {
     return this.apiService.delete('users', id);
   }
 
