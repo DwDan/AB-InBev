@@ -8,5 +8,5 @@ export interface CartProduct {
   unityPrice: number;
   discount: number;
   totalPrice: number;
-  product: Product;
+  product?: Product;
 }

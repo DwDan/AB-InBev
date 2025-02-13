@@ -1,11 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import {
-  ReactiveFormsModule,
-  FormsModule,
-  FormBuilder,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { CartService } from '../../services/cart.service';
 import { CommonModule, Location } from '@angular/common';
@@ -26,7 +20,6 @@ import { Branch } from '../../../branchs/models/branch.model';
 export class CartFormComponent implements OnInit {
   cart: Cart = instanceCart();
   branches: Branch[] = [];
-  selectedBranch?: number;
   displayedColumns: string[] = [
     'id',
     'title',
@@ -42,7 +35,6 @@ export class CartFormComponent implements OnInit {
   private branchService = inject(BranchService);
   private route = inject(ActivatedRoute);
   private location = inject(Location);
-  private fb = inject(FormBuilder);
 
   ngOnInit() {
     this.getBranches();
@@ -51,10 +43,7 @@ export class CartFormComponent implements OnInit {
       if (params['id']) {
         let cartId = +params['id'];
         this.cartService.getCartById(cartId).subscribe((cart) => {
-          if (cart) {
-            this.cart = cart;
-            this.selectedBranch = cart.branchId;
-          }
+          this.cart = cart!;
         });
       }
     });
@@ -63,7 +52,6 @@ export class CartFormComponent implements OnInit {
   onSubmit() {
     if (confirm('Deseja finalizar venda?')) {
       this.cart.isFinished = true;
-      this.cart.branchId = this.selectedBranch;
 
       this.cartService.updateCart(this.cart).subscribe((response) => {
         alert('Venda finalizada com sucesso!');
@@ -91,6 +79,10 @@ export class CartFormComponent implements OnInit {
 
   deleteCartProduct(product: CartProduct) {
     this.cartProductService.deleteCartProduct(product.id).subscribe(() => {
+      this.cart.products = this.cart.products.filter(
+        (p) => p.id !== product.id
+      );
+
       this.updateCart();
     });
   }
@@ -106,18 +98,12 @@ export class CartFormComponent implements OnInit {
 
   decreaseQuantity(product: CartProduct) {
     product.quantity--;
-    this.cart.products = this.cart.products.filter((p) => p.quantity > 0);
 
     if (product.quantity == 0) {
       this.deleteCartProduct(product);
     } else {
       this.updateCart();
     }
-  }
-
-  removeProduct(product: CartProduct) {
-    this.cart.products = this.cart.products.filter((p) => p.id !== product.id);
-    this.deleteCartProduct(product);
   }
 
   deleteCart() {
