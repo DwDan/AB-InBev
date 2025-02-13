@@ -5,7 +5,7 @@ using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Unit.Application.TestData.Common;
 using Bogus;
 
-namespace Ambev.DeveloperEvaluation.Unit.Domain;
+namespace Ambev.DeveloperEvaluation.Unit.Application.TestData.Users;
 
 /// <summary>
 /// Provides methods for generating test data using the Bogus library.
@@ -47,7 +47,7 @@ public static class ListUsersHandlerTestData
         };
     }
 
-    public static ApiQueryResponseDomain<User> GenerateValidResponse() 
+    public static ApiQueryResponseDomain<User> GenerateValidResponse()
     {
         return new ApiQueryResponseDomain<User>
         {
@@ -58,7 +58,7 @@ public static class ListUsersHandlerTestData
         };
     }
 
-    public static ListUsersResult GenerateValidResponse(ApiQueryResponseDomain<User> domainResponse) 
+    public static ListUsersResult GenerateValidResponse(ApiQueryResponseDomain<User> domainResponse)
     {
         return new ListUsersResult
         {

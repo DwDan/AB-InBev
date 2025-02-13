@@ -2,7 +2,7 @@ using Ambev.DeveloperEvaluation.Application.Users.DeleteUser;
 using Ambev.DeveloperEvaluation.Application.Users.GetUser;
 using Bogus;
 
-namespace Ambev.DeveloperEvaluation.Unit.Domain;
+namespace Ambev.DeveloperEvaluation.Unit.Application.TestData.Users;
 
 /// <summary>
 /// Provides methods for generating test data using the Bogus library.
