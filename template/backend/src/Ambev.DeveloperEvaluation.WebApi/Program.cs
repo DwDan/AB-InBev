@@ -12,7 +12,7 @@ using Serilog;
 
 namespace Ambev.DeveloperEvaluation.WebApi;
 
-public class Program
+public partial class Program
 {
     public static void Main(string[] args)
     {
@@ -20,74 +20,10 @@ public class Program
         {
             Log.Information("Starting web application");
 
-            WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
-            builder.AddDefaultLogging();
+            var app = CreateWebApplication(args);
 
-            builder.Services.AddControllers();
-            builder.Services.AddEndpointsApiExplorer();
-
-            builder.AddBasicHealthChecks();
-            builder.Services.AddSwaggerGen();
-
-            builder.Services.AddDbContext<DefaultContext>(options =>
-                options.UseNpgsql(
-                    builder.Configuration.GetConnectionString("DefaultConnection"),
-                    b => b.MigrationsAssembly("Ambev.DeveloperEvaluation.ORM")
-                )
-            );
-
-            builder.Services.AddJwtAuthentication(builder.Configuration);
-
-            builder.RegisterDependencies();
-
-            builder.Services.AddAutoMapper(typeof(Program).Assembly, typeof(ApplicationLayer).Assembly);
-
-            builder.Services.AddMediatR(cfg =>
-            {
-                cfg.RegisterServicesFromAssemblies(
-                    typeof(ApplicationLayer).Assembly,
-                    typeof(Program).Assembly
-                );
-            });
-
-            builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
-
-            builder.Services.AddCors(options =>
-            {
-                options.AddPolicy("AllowFrontend",
-                    policy => policy.WithOrigins("http://localhost:4200")
-                                    .AllowAnyHeader()
-                                    .AllowAnyMethod()
-                                    .AllowCredentials());
-            });
-
-            var app = builder.Build();
-            app.UseMiddleware<ValidationExceptionMiddleware>();
-
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
-
-            app.UseHttpsRedirection();
-
-            app.UseCors("AllowFrontend");
-
-            app.UseAuthentication();
-            app.UseAuthorization();
-
-            app.UseBasicHealthChecks();
-
-            app.MapControllers();
-
-            using (var scope = app.Services.CreateScope())
-            {
-                var dbContext = scope.ServiceProvider.GetRequiredService<DefaultContext>();
-                dbContext.Database.Migrate();
-            }
-
-            app.Run();
+            if (Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") != "true")
+                app.Run();
         }
         catch (Exception ex)
         {
@@ -97,5 +33,77 @@ public class Program
         {
             Log.CloseAndFlush();
         }
+    }
+
+    private static WebApplication CreateWebApplication(string[] args)
+    {
+        WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+        builder.AddDefaultLogging();
+
+        builder.Services.AddControllers();
+        builder.Services.AddEndpointsApiExplorer();
+
+        builder.AddBasicHealthChecks();
+        builder.Services.AddSwaggerGen();
+
+        builder.Services.AddDbContext<DefaultContext>(options =>
+            options.UseNpgsql(
+                builder.Configuration.GetConnectionString("DefaultConnection"),
+                b => b.MigrationsAssembly("Ambev.DeveloperEvaluation.ORM")
+            )
+        );
+
+        builder.Services.AddJwtAuthentication(builder.Configuration);
+
+        builder.RegisterDependencies();
+
+        builder.Services.AddAutoMapper(typeof(Program).Assembly, typeof(ApplicationLayer).Assembly);
+
+        builder.Services.AddMediatR(cfg =>
+        {
+            cfg.RegisterServicesFromAssemblies(
+                typeof(ApplicationLayer).Assembly,
+                typeof(Program).Assembly
+            );
+        });
+
+        builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy("AllowFrontend",
+                policy => policy.WithOrigins("http://localhost:4200")
+                                .AllowAnyHeader()
+                                .AllowAnyMethod()
+                                .AllowCredentials());
+        });
+
+        var app = builder.Build();
+        app.UseMiddleware<ValidationExceptionMiddleware>();
+
+        if (app.Environment.IsDevelopment())
+        {
+            app.UseSwagger();
+            app.UseSwaggerUI();
+        }
+
+        app.UseHttpsRedirection();
+
+        app.UseCors("AllowFrontend");
+
+        app.UseAuthentication();
+        app.UseAuthorization();
+
+        app.UseBasicHealthChecks();
+
+        app.MapControllers();
+
+        using (var scope = app.Services.CreateScope())
+        {
+            var dbContext = scope.ServiceProvider.GetRequiredService<DefaultContext>();
+            dbContext.Database.Migrate();
+        }
+
+        return app;
     }
 }

@@ -8,7 +8,7 @@ namespace Ambev.DeveloperEvaluation.Integration;
 
 public class BranchRepositoryTests : BaseRepositoryTests
 {
-    public BranchRepositoryTests(DatabaseFixture fixture) : base(fixture){}
+    public BranchRepositoryTests(IntegrationDatabaseFixture fixture) : base(fixture){}
 
     [Fact(DisplayName = "Given a new branch When adding to repository Then should persist in database")]
     public async Task AddBranch_ShouldPersistInDatabase()

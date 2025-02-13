@@ -8,7 +8,7 @@ namespace Ambev.DeveloperEvaluation.Integration;
 
 public class UserRepositoryTests : BaseRepositoryTests
 {
-    public UserRepositoryTests(DatabaseFixture fixture) : base(fixture) { }
+    public UserRepositoryTests(IntegrationDatabaseFixture fixture) : base(fixture) { }
 
     [Fact(DisplayName = "Given a new user When adding to repository Then should persist in database")]
     public async Task AddUser_ShouldPersistInDatabase()

@@ -12,7 +12,7 @@ public class CartProductRepositoryTests : BaseRepositoryTests
 {
     private readonly IMediator _mediator;
 
-    public CartProductRepositoryTests(DatabaseFixture fixture) : base(fixture)
+    public CartProductRepositoryTests(IntegrationDatabaseFixture fixture) : base(fixture)
     {
         _mediator = Substitute.For<IMediator>();
     }

@@ -3,14 +3,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
-public class BaseRepositoryTests : IClassFixture<DatabaseFixture>, IAsyncLifetime
+public class BaseRepositoryTests : IClassFixture<IntegrationDatabaseFixture>, IAsyncLifetime
 {
-    private readonly DatabaseFixture _fixture;
+    private readonly IntegrationDatabaseFixture _fixture;
 
     private ServiceProvider _serviceProvider = null!;
     protected DefaultContext DbContext { get; private set; } = null!;
 
-    public BaseRepositoryTests(DatabaseFixture fixture)
+    public BaseRepositoryTests(IntegrationDatabaseFixture fixture)
     {
         _fixture = fixture;
     }

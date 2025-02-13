@@ -8,7 +8,7 @@ namespace Ambev.DeveloperEvaluation.Integration;
 
 public class ProductRepositoryTests : BaseRepositoryTests
 {
-    public ProductRepositoryTests(DatabaseFixture fixture) : base(fixture) { }
+    public ProductRepositoryTests(IntegrationDatabaseFixture fixture) : base(fixture) { }
 
 
     [Fact(DisplayName = "Given a new product When adding to repository Then should persist in database")]
