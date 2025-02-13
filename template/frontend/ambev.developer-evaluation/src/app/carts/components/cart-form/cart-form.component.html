@@ -7,10 +7,10 @@
         <mat-form-field appearance="fill" class="w-100">
           <mat-label>Selecione a Filial</mat-label>
           <mat-select
-            [(ngModel)]="selectedBranch"
-            name="branch"
             required
+            name="branch"
             [disabled]="cart.isCancelled || cart.isFinished"
+            [(ngModel)]="cart.branchId"
           >
             <mat-option *ngFor="let branch of branches" [value]="branch.id">
               {{ branch.name }}
@@ -104,7 +104,7 @@
                 mat-icon-button
                 type="button"
                 color="warn"
-                (click)="removeProduct(cartProduct)"
+                (click)="deleteCartProduct(cartProduct)"
                 [disabled]="cart.isCancelled || cart.isFinished"
               >
                 <mat-icon>delete</mat-icon>
