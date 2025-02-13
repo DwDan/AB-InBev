@@ -6,6 +6,8 @@ public class UpdateCartResponse
 
     public int UserId { get; set; }
 
+    public int? BranchId { get; set; }
+
     public DateTime Date { get; set; }
 
     public decimal Price { get; set; }
