@@ -1,16 +1,10 @@
-﻿using Ambev.DeveloperEvaluation.Application.Users.Common;
-using Ambev.DeveloperEvaluation.Domain.Entities;
+﻿using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Domain.Enums;
 using Bogus;
 
-namespace Ambev.DeveloperEvaluation.Unit.Application.TestData.Common;
+namespace Ambev.DeveloperEvaluation.Integration.TestData;
 
-/// <summary>
-/// Provides methods for generating test data using the Bogus library.
-/// This class centralizes all test data generation to ensure consistency
-/// across test cases and provide both valid and invalid data scenarios.
-/// </summary>
-public static class UserHandlerTestData
+public static class UserRepositoryTestData
 {
     /// <summary>
     /// Configures the Faker to generate valid User entities.
@@ -57,36 +51,5 @@ public static class UserHandlerTestData
     public static User GenerateValidEntity()
     {
         return userHandlerFaker.Generate();
-    }
-
-    public static UserApplication GenerateValidEntity(User user)
-    {
-        return new UserApplication
-        {
-            Id = int.MaxValue,
-            Username = user.Username,
-            Password = user.Password,
-            Email = user.Email,
-            Phone = user.Phone,
-            Status = user.Status,
-            Role = user.Role,
-            Name = new NameApplication
-            {
-                Firstname = user.Name.Firstname,
-                Lastname = user.Name.Lastname,
-            },
-            Address = new AddressApplication
-            {
-                Street = user.Address.Street,
-                City = user.Address.City,
-                Zipcode = user.Address.Zipcode,
-                Number = user.Address.Number,
-                Geolocation = new GeolocationApplication
-                {
-                    Latitude = user.Address.Geolocation.Latitude,
-                    Longitude = user.Address.Geolocation.Longitude,
-                }
-            }
-        };
     }
 }
