@@ -1,5 +1,4 @@
 ﻿using Ambev.DeveloperEvaluation.Domain.Entities;
-using Ambev.DeveloperEvaluation.Domain.Repositories;
 using AutoMapper;
 using FluentValidation;
 using MediatR;
@@ -9,18 +8,11 @@ namespace Ambev.DeveloperEvaluation.Application.CartProducts.UpdateCartProduct;
 public class UpdateCartProductHandler : IRequestHandler<UpdateCartProductCommand, UpdateCartProductResult>
 {
     private readonly ICartProductRepository _cartProductRepository;
-    private readonly ICartProductRepository _cartProductProductRepository;
-    private readonly IUserRepository _userRepository;
-    private readonly IProductRepository _productRepository;
     private readonly IMapper _mapper;
 
-    public UpdateCartProductHandler(ICartProductRepository cartProductRepository, ICartProductRepository cartProductProductRepository,
-        IUserRepository userRepository, IProductRepository productRepository, IMapper mapper)
+    public UpdateCartProductHandler(ICartProductRepository cartProductRepository, IMapper mapper)
     {
         _cartProductRepository = cartProductRepository;
-        _cartProductProductRepository = cartProductProductRepository;
-        _productRepository = productRepository;
-        _userRepository = userRepository;
         _mapper = mapper;
     }
 
@@ -31,9 +23,6 @@ public class UpdateCartProductHandler : IRequestHandler<UpdateCartProductCommand
 
         if (!validationResult.IsValid)
             throw new ValidationException(validationResult.Errors);
-
-        if (await _cartProductRepository.GetByIdAsync(command.Id, cancellationToken) == null)
-            throw new KeyNotFoundException($"Cart product with ID {command.Id} not found");
 
         var cartProduct = _mapper.Map<CartProduct>(command);
 

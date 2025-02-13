@@ -25,9 +25,6 @@ public class UpdateBranchHandler : IRequestHandler<UpdateBranchCommand, UpdateBr
         if (!validationResult.IsValid)
             throw new ValidationException(validationResult.Errors);
 
-        if (await _branchRepository.GetByIdAsync(command.Id, cancellationToken) == null)
-            throw new KeyNotFoundException($"Branch with ID {command.Id} not found");
-
         var existingUser = await _branchRepository.GetByAsync((branch)=> branch.Name == command.Name && branch.Id != command.Id, cancellationToken);
         if (existingUser != null)
             throw new InvalidOperationException($"Branch with name {command.Name} already exists");
