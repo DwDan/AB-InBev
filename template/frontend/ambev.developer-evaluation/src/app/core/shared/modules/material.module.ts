@@ -11,6 +11,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatSelectModule } from '@angular/material/select';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatMenuModule } from '@angular/material/menu';
 
 const matModules = [
   MatDialogModule,
@@ -25,6 +26,7 @@ const matModules = [
   MatBadgeModule,
   MatSelectModule,
   MatChipsModule,
+  MatMenuModule
 ];
 
 @NgModule({

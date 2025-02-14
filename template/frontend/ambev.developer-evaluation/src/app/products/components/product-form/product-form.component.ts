@@ -24,6 +24,10 @@ export class ProductFormComponent implements OnInit {
   isEditMode = false;
   productId!: number;
   product?: Product;
+  stars = Array(5).fill(0);
+  imagePreview: string = "https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg"; 
+  defaultImage: string = "https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg"; 
+  baseImageUrl: string = "https://your-image-server.com/images/"; 
 
   constructor(
     private fb: FormBuilder,
@@ -83,4 +87,30 @@ export class ProductFormComponent implements OnInit {
   onCancel() {
     this.router.navigate(['/products']);
   }
+
+  setRating(value: number) {
+    this.productForm.get("rating.rate")?.setValue(value);
+  }
+
+
+  updateImagePreview() {
+    let imageUrl = this.productForm.get("image")?.value.trim();
+
+    if (!imageUrl) {
+      this.imagePreview = this.defaultImage;
+      return;
+    }
+
+    if (!imageUrl.startsWith("http")) {
+      imageUrl = `${this.baseImageUrl}${imageUrl}`;
+    }
+
+    this.imagePreview = imageUrl;
+  }
+
+  handleImageError() {
+    this.imagePreview = this.defaultImage;
+    this.productForm.get("image")?.setValue("");
+  }
 }
+

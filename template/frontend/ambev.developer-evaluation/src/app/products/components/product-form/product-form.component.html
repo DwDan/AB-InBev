@@ -5,50 +5,68 @@
     }}</mat-toolbar>
     <form [formGroup]="productForm" (ngSubmit)="onSubmit()" class="p-3">
       <div class="row">
-        <mat-form-field class="col-xl-6 col-lg-6 col-md-12">
-          <mat-label>Título</mat-label>
-          <input matInput type="text" formControlName="title" />
-        </mat-form-field>
+        <div class="col-lg-2 col-md-2">
+          <img
+            [src]="imagePreview"
+            class="img-preview"
+            alt="Product Image Preview"
+            (error)="handleImageError()"
+          />
+        </div>
 
-        <mat-form-field class="col-xl-6 col-lg-6 col-md-12">
-          <mat-label>Categoria</mat-label>
-          <input matInput type="text" formControlName="category" />
-        </mat-form-field>
+        <div class="col-lg-10 col-md-10">
+          <div class="row">
+            <mat-form-field class="col-xl-6 col-lg-6 col-md-12">
+              <mat-label>Título</mat-label>
+              <input matInput type="text" formControlName="title" />
+            </mat-form-field>
+
+            <mat-form-field class="col-xl-6 col-lg-6 col-md-12">
+              <mat-label>Categoria</mat-label>
+              <input matInput type="text" formControlName="category" />
+            </mat-form-field>
+          </div>
+
+          <div class="row">
+            <mat-form-field class="col-xl-6 col-lg-6 col-md-12">
+              <mat-label>Preço</mat-label>
+              <input matInput type="number" formControlName="price" />
+            </mat-form-field>
+
+            <mat-form-field class="col-xl-6 col-lg-6 col-md-12">
+              <mat-label>Imagem (URL)</mat-label>
+              <input
+                matInput
+                type="text"
+                formControlName="image"
+                (input)="updateImagePreview()"
+              />
+            </mat-form-field>
+          </div>
+        </div>
       </div>
 
       <div class="row">
-        <mat-form-field class="col-xl-6 col-lg-6 col-md-12">
-          <mat-label>Preço</mat-label>
-          <input matInput type="number" formControlName="price" />
-        </mat-form-field>
-
-        <mat-form-field class="col-xl-6 col-lg-6 col-md-12">
+        <mat-form-field class="col-xl-12 col-lg-12 col-md-12">
           <mat-label>Descrição</mat-label>
           <textarea matInput formControlName="description"></textarea>
         </mat-form-field>
       </div>
 
-      <div class="row">
-        <mat-form-field class="col-xl-12 col-lg-12 col-md-12">
-          <mat-label>Imagem (URL)</mat-label>
-          <input matInput type="text" formControlName="image" />
-        </mat-form-field>
-      </div>
-
       <div formGroupName="rating">
         <div class="row mb-3">
-          <mat-form-field class="col-xl-6 col-lg-6 col-md-12">
-            <mat-label>Avaliação</mat-label>
-            <input
-              matInput
-              type="number"
-              formControlName="rate"
-              min="0"
-              max="5"
-              step="0.1"
-            />
-          </mat-form-field>
-
+          <div class="col-xl-6 col-lg-6 col-md-12">
+            <label>Avaliação</label>
+            <div class="star-rating">
+              <mat-icon
+                *ngFor="let star of stars; let i = index"
+                [ngClass]="{'selected': i < productForm.get('rating.rate')?.value}"
+                (click)="setRating(i + 1)"
+              >
+                {{ i < productForm.get('rating.rate')?.value ? 'star' : 'star_border' }}
+              </mat-icon>
+            </div>
+          </div>
           <mat-form-field class="col-xl-6 col-lg-6 col-md-12">
             <mat-label>Contagem de Avaliações</mat-label>
             <input matInput type="number" formControlName="count" min="0" />
