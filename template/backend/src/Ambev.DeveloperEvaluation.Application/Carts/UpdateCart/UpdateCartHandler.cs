@@ -9,18 +9,13 @@ namespace Ambev.DeveloperEvaluation.Application.Carts.UpdateCart;
 public class UpdateCartHandler : IRequestHandler<UpdateCartCommand, UpdateCartResult>
 {
     private readonly ICartRepository _cartRepository;
-    private readonly ICartProductRepository _cartProductRepository;
-    private readonly IUserRepository _userRepository;
     private readonly IProductRepository _productRepository;
     private readonly IMapper _mapper;
 
-    public UpdateCartHandler(ICartRepository cartRepository, ICartProductRepository cartProductRepository,
-        IUserRepository userRepository, IProductRepository productRepository, IMapper mapper)
+    public UpdateCartHandler(ICartRepository cartRepository, IProductRepository productRepository, IMapper mapper)
     {
         _cartRepository = cartRepository;
-        _cartProductRepository = cartProductRepository;
         _productRepository = productRepository;
-        _userRepository = userRepository;
         _mapper = mapper;
     }
 
